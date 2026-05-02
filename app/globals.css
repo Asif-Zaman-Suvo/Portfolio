@@ -14,6 +14,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Fixed navbar (~h-18); keeps hash targets from sitting under the bar */
+  scroll-padding-top: 4.5rem;
 }
 
 body {

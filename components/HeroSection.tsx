@@ -27,7 +27,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section id="hero" className="relative overflow-hidden pt-18 pb-20 sm:pt-24">
+    <section className="relative overflow-hidden pb-20">
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_300px]">
         <div>
           <Reveal>

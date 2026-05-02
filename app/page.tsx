@@ -33,7 +33,10 @@ export default function Home() {
 
       <Navbar />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 pt-18 pb-12 sm:px-8 sm:pt-20 sm:pb-14 lg:px-10">
+      <div
+        id="hero"
+        className="relative z-10 mx-auto max-w-6xl px-5 pt-36 pb-12 sm:px-8 sm:pt-44 sm:pb-14 lg:px-10"
+      >
         <HeroSection />
         <AboutSection />
         <SkillsSection />
