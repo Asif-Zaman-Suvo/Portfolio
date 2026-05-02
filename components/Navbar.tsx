@@ -16,12 +16,13 @@ export function Navbar() {
       initial={{ y: -30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
-      className="sticky top-0 z-50 border-b border-white/10 bg-[#050508]/65 backdrop-blur-xl"
+      className="fixed inset-x-0 top-0 z-50"
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8 lg:px-10">
+      <div className="absolute inset-0 border-b border-white/10 bg-[#050508]/70 backdrop-blur-xl" />
+      <nav className="relative mx-auto flex h-18 max-w-6xl items-center justify-between px-5 sm:px-8 lg:px-10">
         <a
           href="#hero"
-          className="group rounded-lg border border-[#7c6fff]/30 bg-[#7c6fff]/10 px-3 py-1.5 shadow-[0_0_24px_rgba(124,111,255,0.25)] transition-all hover:border-[#00d4ff]/60 hover:bg-[#00d4ff]/10 hover:shadow-[0_0_28px_rgba(0,212,255,0.3)]"
+          className="group rounded-xl border border-[#7c6fff]/40 bg-[#7c6fff]/12 px-3.5 py-1.5 shadow-[0_0_26px_rgba(124,111,255,0.25)] transition-all hover:-translate-y-0.5 hover:border-[#00d4ff]/65 hover:bg-[#00d4ff]/12 hover:shadow-[0_0_34px_rgba(0,212,255,0.3)]"
         >
           <span className="font-mono text-lg font-extrabold tracking-[0.08em] text-white sm:text-xl">
             <span className="text-violet-400 transition-colors group-hover:text-violet-300">
@@ -41,12 +42,12 @@ export function Navbar() {
             </span>
           </span>
         </a>
-        <ul className="hidden items-center gap-6 md:flex">
+        <ul className="hidden items-center gap-1 rounded-full border border-white/12 bg-white/4 px-2 py-1.5 md:flex">
           {navItems.map((item) => (
             <li key={item.label}>
               <a
                 href={item.href}
-                className="text-sm text-white/75 transition-colors hover:text-[#00d4ff]"
+                className="rounded-full px-3 py-1.5 text-sm text-white/75 transition-all hover:bg-white/8 hover:text-[#00d4ff]"
               >
                 {item.label}
               </a>

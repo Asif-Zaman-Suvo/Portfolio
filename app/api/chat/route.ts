@@ -90,9 +90,11 @@ async function chatWithGlm(
   const data = (await res.json()) as {
     choices?: Array<{ message?: { content?: string } }>;
   };
+  const rawMessage = data.choices?.[0]?.message?.content;
   const message =
-    data.choices?.[0]?.message?.content?.trim() ??
-    "I can help with Asif's background, stack, and availability.";
+    typeof rawMessage === "string" && rawMessage.trim().length > 0
+      ? rawMessage.trim()
+      : "I can help with Asif's background, stack, and availability.";
 
   return NextResponse.json({ message });
 }
@@ -130,9 +132,11 @@ async function chatWithAnthropic(
   const data = (await anthropicResponse.json()) as {
     content?: Array<{ type: string; text?: string }>;
   };
+  const rawMessage = data.content?.find((item) => item.type === "text")?.text;
   const message =
-    data.content?.find((item) => item.type === "text")?.text ??
-    "I can help with Asif's background, stack, and availability.";
+    typeof rawMessage === "string" && rawMessage.trim().length > 0
+      ? rawMessage.trim()
+      : "I can help with Asif's background, stack, and availability.";
 
   return NextResponse.json({ message });
 }
