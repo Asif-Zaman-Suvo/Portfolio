@@ -67,11 +67,12 @@ export function HeroSection() {
           <Reveal delay={0.3}>
             <div className="mt-9 flex flex-wrap gap-3">
               <a href="/cv.pdf" download>
-                <Button size="lg">Download CV</Button>
+                <Button className="cursor-pointer" size="lg">Download CV</Button>
               </a>
               <Button
                 variant="glow"
                 size="lg"
+                className="cursor-pointer"
                 onClick={() => window.dispatchEvent(new Event("open-asif-ai-chat"))}
               >
                 <Sparkles className="h-4 w-4" />
