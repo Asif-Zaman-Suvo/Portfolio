@@ -57,7 +57,7 @@ export default function Home() {
               </a>
               <a
                 className="contact-link"
-                href="https://www.linkedin.com/in/"
+                href="https://www.linkedin.com/in/md-asifuzzaman-shuvo"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -65,7 +65,7 @@ export default function Home() {
               </a>
               <a
                 className="contact-link"
-                href="https://github.com/"
+                href="https://github.com/asif-zaman-suvo"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -73,7 +73,7 @@ export default function Home() {
               </a>
               <a
                 className="contact-link md:col-span-2"
-                href="https://leetcode.com/"
+                href="https://leetcode.com/u/Asif_Suvo"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -81,6 +81,10 @@ export default function Home() {
               </a>
             </div>
           </div>
+
+          <p className="mt-8 border-t border-white/10 pt-5 text-center text-xs tracking-[0.14em] text-white/45">
+            © {new Date().getFullYear()} Md Asifuzzaman Suvo. All rights reserved.
+          </p>
         </section>
       </div>
 

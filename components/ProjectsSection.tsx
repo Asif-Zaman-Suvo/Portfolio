@@ -1,30 +1,61 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, GitFork, Globe } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/Reveal";
 
 const projects = [
   {
-    title: "LMS Growth Suite",
+    title: "Doctor Khuji",
     description:
-      "Built core LMS modules including coupons, reporting, and affiliate workflows to improve user engagement and retention.",
-    stack: ["Next.js", "TypeScript", "Storyblok", "Chart.js"],
+      "Doctors portal where patients book appointments, doctors manage practice, and admins control approvals with role-based flows.",
+    stack: ["Next.js", "TypeScript", "Tailwind", "Prisma","NestJS", "PostgreSQL","Playright",'Agentic-Workflow','Shadcn/ui','Supabase'],
+    github: "https://github.com/Asif-Zaman-Suvo/Doctor-Khuji",
+    live: "https://doctor-khuji.vercel.app/",
   },
   {
-    title: "Scalable ERP Frontend",
+    title: "Ticket Booking System",
     description:
-      "Developed enterprise-grade Angular + GraphQL interfaces that reduced wait times and improved operational responsiveness.",
-    stack: ["Angular", "GraphQL", "SCSS", "Ant Design"],
+      "E-ticket web app for searching routes, booking bus tickets, and handling modern user booking journeys.",
+    stack: ["Next.js", "TypeScript", "Tailwind", "shadcn/ui"],
+    github: "https://github.com/Asif-Zaman-Suvo/Ticket-Booking-System-Frontend",
+    live: "https://suvo-e-ticket-booking.vercel.app/",
   },
   {
-    title: "COVID-19 Insights Dashboard",
+    title: "Smartphone Management Dashboard",
     description:
-      "Implemented district-level data visualization platform for nationwide COVID analytics and UI accessibility.",
-    stack: ["Angular", "TypeScript", "Data Viz"],
+      "Role-based product and sales dashboard with authentication, inventory operations, and invoice generation flows.",
+    stack: ["React", "TypeScript", "Redux Toolkit", "RTK Query", "Tailwind",'Node.js','Express','MongoDB','mongoose','jwt','ZOD','bcrypt','cloudinary'],
+    github: "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Frontend",
+    backend: "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Backend",
+    live: "https://smartphone-management-frontend-suvo.vercel.app/",
   },
-];
+  {
+    title: "LMS Platform",
+    description:
+      "Contributed to LMS product modules, reporting workflows, and frontend improvements as part of engineering work.",
+    stack: ["Next.js", "TypeScript", "SCSS", "Chakra UI"],
+    live: "https://keeron.com/",
+    note: "Commercial client project",
+  },
+  {
+    title: "Restaurant Web App",
+    description:
+      "Food delivery web app with category-based browsing, cart flow, and Firebase-backed authentication.",
+    stack: ["React", "JavaScript", "Firebase", "React Router", "Bootstrap"],
+    github: "https://github.com/Asif-Zaman-Suvo/hot-onion-restaurant",
+    live: "https://hot-onion-restaurant-suvo176.web.app/",
+  },
+  {
+    title: "DevLinks",
+    description:
+      "Developer-focused links management and profile hub app with a clean authentication-led experience.",
+    stack: ["Next.js", "TypeScript", "Auth", "Responsive UI"],
+    github: "https://github.com/Asif-Zaman-Suvo/devlinks",
+    live: "https://dev-links-finder.vercel.app/",
+  }
+] as const;
 
 export function ProjectsSection() {
   return (
@@ -34,7 +65,7 @@ export function ProjectsSection() {
         <h2 className="section-heading">Selected product engineering work.</h2>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
+      <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {projects.map((project, index) => (
           <motion.div
             key={project.title}
@@ -58,6 +89,46 @@ export function ProjectsSection() {
                     {item}
                   </span>
                 ))}
+              </div>
+
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+                {"github" in project ? (
+                  <>
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-[#7c6fff]/35 bg-[#7c6fff]/10 px-3 py-1.5 text-xs text-[#d9d5ff] transition hover:border-[#00d4ff]/60 hover:text-white"
+                    >
+                      <GitFork className="h-3.5 w-3.5" />
+                      GitHub
+                    </a>
+                    {"backend" in project ? (
+                      <a
+                        href={project.backend}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#7c6fff]/35 bg-[#7c6fff]/10 px-3 py-1.5 text-xs text-[#d9d5ff] transition hover:border-[#00d4ff]/60 hover:text-white"
+                      >
+                        <GitFork className="h-3.5 w-3.5" />
+                        Backend
+                      </a>
+                    ) : null}
+                  </>
+                ) : (
+                  <span className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/60">
+                    {project.note}
+                  </span>
+                )}
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[#00d4ff]/40 bg-[#00d4ff]/8 px-3 py-1.5 text-xs text-[#c9f6ff] transition hover:border-[#00d4ff]/70 hover:text-white"
+                >
+                  <Globe className="h-3.5 w-3.5" />
+                  Live
+                </a>
               </div>
             </Card>
           </motion.div>
