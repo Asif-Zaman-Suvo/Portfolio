@@ -86,8 +86,30 @@ export function ChatBot() {
         body: JSON.stringify({ messages: nextMessages }),
       });
 
-      if (!res.ok) throw new Error("Chat request failed");
-      const data = (await res.json()) as { message?: string };
+      const data = (await res.json()) as {
+        message?: string;
+        error?: string;
+        detail?: string;
+        userMessage?: string;
+      };
+
+      if (!res.ok) {
+        let userText =
+          data.userMessage ??
+          data.error ??
+          "Chat request failed. Check server logs.";
+        if (!data.userMessage && data.detail) {
+          try {
+            const parsed = JSON.parse(data.detail) as {
+              error?: { message?: string };
+            };
+            if (parsed.error?.message) userText = parsed.error.message;
+          } catch {
+            userText = data.detail;
+          }
+        }
+        throw new Error(userText);
+      }
 
       setMessages((prev) => [
         ...prev,
@@ -98,13 +120,16 @@ export function ChatBot() {
             "I can help with Asif's background, stack, and availability.",
         },
       ]);
-    } catch {
+    } catch (err) {
+      const hint =
+        err instanceof Error ? err.message : "Unknown error";
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content:
-            "The AI endpoint is unavailable right now. Add your ANTHROPIC_API_KEY to `.env.local` and try again.",
+          content: `Something went wrong: ${hint}
+
+If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \`GLM_MODEL\` from the [model list](https://docs.bigmodel.cn/cn/guide/start/model-overview), and restart \`npm run dev\`.`,
         },
       ]);
     } finally {
