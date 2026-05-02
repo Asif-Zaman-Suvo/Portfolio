@@ -12,9 +12,33 @@ const navItems = [
   { label: "Contact", href: "#contact" },
 ];
 
+function goToHash(href: string) {
+  const id = href.startsWith("#") ? href.slice(1) : href;
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  const next = `${window.location.pathname}${window.location.search}${href}`;
+  window.history.replaceState(null, "", next);
+}
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const menuId = useId();
+
+  const onNavLinkClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    if (!href.startsWith("#")) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (event.button !== 0) return;
+    event.preventDefault();
+    setOpen(false);
+    requestAnimationFrame(() => {
+      goToHash(href);
+    });
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -22,12 +46,7 @@ export function Navbar() {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
   return (
@@ -41,12 +60,12 @@ export function Navbar() {
         <div className="border-b border-white/10 bg-[#050508]/75 backdrop-blur-xl">
           <div className="relative mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
             <nav
-              className="flex h-16 items-center justify-between sm:h-18"
+              className="relative z-10 flex h-16 items-center justify-between sm:h-18"
               aria-label="Primary"
             >
               <a
                 href="#hero"
-                onClick={() => setOpen(false)}
+                onClick={(e) => onNavLinkClick(e, "#hero")}
                 className="group rounded-xl border border-[#7c6fff]/40 bg-[#7c6fff]/12 px-3 py-1.5 shadow-[0_0_26px_rgba(124,111,255,0.25)] transition-all hover:-translate-y-0.5 hover:border-[#00d4ff]/65 hover:bg-[#00d4ff]/12 hover:shadow-[0_0_34px_rgba(0,212,255,0.3)]"
               >
                 <span className="font-mono text-base font-extrabold tracking-[0.08em] text-white sm:text-lg lg:text-xl">
@@ -73,6 +92,7 @@ export function Navbar() {
                   <li key={item.label}>
                     <a
                       href={item.href}
+                      onClick={(e) => onNavLinkClick(e, item.href)}
                       className="rounded-full px-3 py-1.5 text-sm text-white/75 transition-all hover:bg-white/8 hover:text-[#00d4ff]"
                     >
                       {item.label}
@@ -83,7 +103,7 @@ export function Navbar() {
 
               <button
                 type="button"
-                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:border-[#00d4ff]/50 hover:bg-white/10 hover:text-white lg:hidden"
+                className="relative z-20 inline-flex h-11 w-11 shrink-0 touch-manipulation items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:border-[#00d4ff]/50 hover:bg-white/10 hover:text-white lg:hidden"
                 aria-expanded={open}
                 aria-controls={menuId}
                 onClick={() => setOpen((v) => !v)}
@@ -97,23 +117,25 @@ export function Navbar() {
               {open ? (
                 <motion.div
                   id={menuId}
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="overflow-hidden border-t border-white/10 lg:hidden"
+                  role="navigation"
+                  aria-label="Mobile sections"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative z-10 border-t border-white/10 lg:hidden"
                 >
-                  <ul className="flex flex-col gap-1 py-3 pb-4">
+                  <ul className="flex max-h-[min(70vh,calc(100dvh-5rem))] flex-col gap-1 overflow-y-auto overscroll-contain py-3 pb-4">
                     {navItems.map((item, i) => (
                       <motion.li
                         key={item.label}
                         initial={{ opacity: 0, x: -8 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.04 + i * 0.04 }}
+                        transition={{ delay: 0.03 + i * 0.03 }}
                       >
                         <a
                           href={item.href}
-                          onClick={() => setOpen(false)}
+                          onClick={(e) => onNavLinkClick(e, item.href)}
                           className="block rounded-xl px-4 py-3 text-base text-white/85 transition hover:bg-white/8 hover:text-[#00d4ff]"
                         >
                           {item.label}

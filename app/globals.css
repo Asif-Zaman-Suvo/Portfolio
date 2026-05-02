@@ -62,6 +62,7 @@ body {
 .particle-layer {
   position: absolute;
   inset: -120px;
+  pointer-events: none;
   opacity: 0.35;
   background-image: radial-gradient(
       rgba(124, 111, 255, 0.48) 1.1px,
