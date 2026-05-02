@@ -65,7 +65,7 @@ export function ProjectsSection() {
         <h2 className="section-heading">Selected product engineering work.</h2>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {projects.map((project, index) => (
           <motion.div
             key={project.title}

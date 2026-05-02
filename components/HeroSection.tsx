@@ -34,9 +34,9 @@ export function HeroSection() {
             <p className="mb-3 text-sm uppercase tracking-[0.3em] text-[#00d4ff]/80">
               Hi, I&apos;m
             </p>
-            <h1 className="text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">
+            <h1 className="text-balance text-3xl font-semibold leading-tight tracking-tight text-white min-[400px]:text-4xl sm:text-5xl md:text-6xl">
               {typedName}
-              <span className="ml-1 inline-block h-12 w-0.5 translate-y-1 animate-caret bg-[#00d4ff]" />
+              <span className="ml-1 inline-block h-8 w-0.5 translate-y-0.5 animate-caret bg-[#00d4ff] sm:h-10 sm:translate-y-1 md:h-12" />
             </h1>
           </Reveal>
 
@@ -65,14 +65,16 @@ export function HeroSection() {
           </Reveal>
 
           <Reveal delay={0.3}>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <a href="/cv.pdf" download>
-                <Button className="cursor-pointer" size="lg">Download CV</Button>
+            <div className="mt-9 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href="/cv.pdf" download className="w-full sm:w-auto">
+                <Button className="w-full cursor-pointer sm:w-auto" size="lg">
+                  Download CV
+                </Button>
               </a>
               <Button
                 variant="glow"
                 size="lg"
-                className="cursor-pointer"
+                className="w-full cursor-pointer sm:w-auto"
                 onClick={() => window.dispatchEvent(new Event("open-asif-ai-chat"))}
               >
                 <Sparkles className="h-4 w-4" />

@@ -67,8 +67,8 @@ export function ExperienceTimeline() {
                 className={`pl-10 md:pl-0 ${index % 2 === 0 ? "md:pr-8" : "md:col-start-2 md:pl-8"}`}
               >
                 <Card className="p-5 transition-transform duration-300 hover:-translate-y-1">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-lg font-semibold text-white">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                    <h3 className="text-balance text-base font-semibold text-white sm:text-lg">
                       {item.role} @ {item.company}
                     </h3>
                     <span className="rounded-full border border-[#7c6fff]/40 bg-[#7c6fff]/15 px-2.5 py-1 text-xs text-[#d9d5ff]">

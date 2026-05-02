@@ -50,7 +50,7 @@ export function AboutSection() {
         </p>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Reveal delay={0.1}>
           <Card className="p-5">
             <Counter value={5} suffix="+" />

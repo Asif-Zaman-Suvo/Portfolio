@@ -143,7 +143,7 @@ If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \
         id="ai-chat"
         aria-label="Open AI assistant"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 rounded-full border border-[#7c6fff]/40 bg-[#120f1f] p-4 text-[#d9d5ff] shadow-[0_0_0_1px_rgba(124,111,255,0.4),0_0_28px_rgba(124,111,255,0.35)]"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] z-50 rounded-full border border-[#7c6fff]/40 bg-[#120f1f] p-3.5 text-[#d9d5ff] shadow-[0_0_0_1px_rgba(124,111,255,0.4),0_0_28px_rgba(124,111,255,0.35)] max-[380px]:p-3 sm:bottom-6 sm:right-6 sm:p-4"
         animate={{ y: [0, -4, 0] }}
         transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
       >
@@ -159,7 +159,7 @@ If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \
       <AnimatePresence>
         {open ? (
           <motion.div
-            className="fixed inset-0 z-[60] flex items-end justify-end bg-black/45 p-4 sm:items-center"
+            className="fixed inset-0 z-[60] flex items-end justify-end bg-black/45 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] sm:items-center sm:p-4 sm:pb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

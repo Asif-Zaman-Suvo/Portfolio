@@ -99,7 +99,7 @@ export function SkillsSection() {
         <h2 className="section-heading">Stack that ships production reliably.</h2>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {groups.map((group, groupIndex) => {
           const Icon = group.icon;
           return (

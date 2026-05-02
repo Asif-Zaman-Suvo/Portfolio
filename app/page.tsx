@@ -35,7 +35,7 @@ export default function Home() {
 
       <div
         id="hero"
-        className="relative z-10 mx-auto max-w-6xl px-5 pt-36 pb-12 sm:px-8 sm:pt-44 sm:pb-14 lg:px-10"
+        className="relative z-10 mx-auto max-w-6xl px-4 pt-28 pb-10 sm:px-8 sm:pt-36 sm:pb-12 md:pt-40 md:pb-14 lg:px-10 lg:pt-44"
       >
         <HeroSection />
         <AboutSection />

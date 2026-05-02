@@ -13,6 +13,12 @@ export const metadata: Metadata = {
     "Portfolio of Md Asifuzzaman Suvo, Frontend Engineer specializing in React, Next.js, Angular, and TypeScript.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover" as const,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
