@@ -33,17 +33,17 @@ export default function Home() {
 
       <Navbar />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-20 sm:px-8 lg:px-10">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-12 sm:px-8 sm:pb-14 lg:px-10">
         <HeroSection />
         <AboutSection />
         <SkillsSection />
         <ExperienceTimeline />
         <ProjectsSection />
 
-        <section id="contact" className="py-16">
+        <section id="contact" className="pt-14 pb-6 sm:pt-16">
           <p className="section-kicker">Contact</p>
           <h2 className="section-heading">Let&apos;s build something meaningful.</h2>
-          <div className="mt-8 rounded-2xl border border-transparent bg-[linear-gradient(#0f0e17,#0f0e17)_padding-box,linear-gradient(120deg,rgba(124,111,255,0.8),rgba(0,212,255,0.8))_border-box] p-6">
+          <div className="mt-6 rounded-2xl border border-transparent bg-[linear-gradient(#0f0e17,#0f0e17)_padding-box,linear-gradient(120deg,rgba(124,111,255,0.8),rgba(0,212,255,0.8))_border-box] p-5 sm:p-6">
             <p className="text-white/75">
               Open to remote and relocation opportunities. Reach out for product
               engineering roles, frontend architecture work, or collaboration.
@@ -82,7 +82,7 @@ export default function Home() {
             </div>
           </div>
 
-          <p className="mt-8 border-t border-white/10 pt-5 text-center text-xs tracking-[0.14em] text-white/45">
+          <p className="mt-4 border-t border-white/10 pt-3 text-center text-xs tracking-[0.14em] text-white/45">
             © {new Date().getFullYear()} Md Asifuzzaman Suvo. All rights reserved.
           </p>
         </section>
