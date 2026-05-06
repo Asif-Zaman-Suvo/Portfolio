@@ -11,6 +11,11 @@ import { Reveal } from "@/components/Reveal";
 const fullName = "Md Asifuzzaman Suvo";
 const badges = ["5 YOE", "Open to Remote", "Open to Relocation"];
 
+const cvUrl =
+  process.env.NEXT_PUBLIC_CV_URL?.trim() ||
+  "/cv.pdf";
+const cvIsLocalAsset = cvUrl.startsWith("/");
+
 export function HeroSection() {
   const [typedName, setTypedName] = useState("");
   const [imageFailed, setImageFailed] = useState(false);
@@ -66,7 +71,16 @@ export function HeroSection() {
 
           <Reveal delay={0.3}>
             <div className="mt-9 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <a href="/cv.pdf" download className="w-full sm:w-auto">
+              <a
+                href={cvUrl}
+                {...(cvIsLocalAsset
+                  ? ({ download: true } as const)
+                  : ({
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                    } as const))}
+                className="w-full sm:w-auto"
+              >
                 <Button className="w-full cursor-pointer sm:w-auto" size="lg">
                   Download CV
                 </Button>
