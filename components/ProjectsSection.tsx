@@ -5,12 +5,36 @@ import { ArrowUpRight, GitFork, Globe } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/Reveal";
 
-const projects = [
+type Project = {
+  title: string;
+  description: string;
+  stack: string[];
+  live?: string;
+  status?: string;
+  github?: string;
+  githubRepoFrontend?: string;
+  githubRepoBackend?: string;
+};
+
+const linkClass =
+  "inline-flex items-center gap-1.5 rounded-lg border border-[#7c6fff]/35 bg-[#7c6fff]/10 px-3 py-1.5 text-xs text-[#d9d5ff] transition hover:border-[#00d4ff]/60 hover:text-white";
+
+const projects: Project[] = [
   {
     title: "Doctor Khuji",
     description:
       "Doctors portal where patients book appointments, doctors manage practice, and admins control approvals with role-based flows.",
-    stack: ["Next.js", "TypeScript", "Tailwind", "Prisma","NestJS", "PostgreSQL","Playright",'Agentic-Workflow','Shadcn/ui','Supabase'],
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind",
+      "Prisma",
+      "PostgreSQL",
+      "Playright",
+      "Agentic-Workflow",
+      "Shadcn/ui",
+      "Supabase",
+    ],
     github: "https://github.com/Asif-Zaman-Suvo/Doctor-Khuji",
     live: "https://doctor-khuji.vercel.app/",
   },
@@ -18,17 +42,32 @@ const projects = [
     title: "Ticket Booking System",
     description:
       "E-ticket web app for searching routes, booking bus tickets, and handling modern user booking journeys.",
-    stack: ["Next.js", "TypeScript", "Tailwind", "shadcn/ui"],
+    stack: ["Next.js", "TypeScript", "Tailwind", "shadcn/ui","Supabase",'Better-Auth','Nestjs'],
     github: "https://github.com/Asif-Zaman-Suvo/Ticket-Booking-System-Frontend",
-    live: "https://suvo-e-ticket-booking.vercel.app/",
+    live: "https://suvo-e-ticket-booking.vercel.app",
+    status: "In Progress",
   },
   {
     title: "Smartphone Management Dashboard",
     description:
       "Role-based product and sales dashboard with authentication, inventory operations, and invoice generation flows.",
-    stack: ["React", "TypeScript", "Redux Toolkit", "RTK Query", "Tailwind",'Node.js','Express','MongoDB','mongoose','jwt','ZOD','bcrypt','cloudinary'],
-    github: "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Frontend",
-    backend: "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Backend",
+    stack: [
+      "React",
+      "TypeScript",
+      "Redux Toolkit",
+      "RTK Query",
+      "Tailwind",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "mongoose",
+      "jwt",
+      "ZOD",
+      "bcrypt",
+      "cloudinary",
+    ],
+    githubRepoFrontend: "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Frontend",
+    githubRepoBackend: "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Backend",
     live: "https://smartphone-management-frontend-suvo.vercel.app/",
   },
   {
@@ -36,8 +75,8 @@ const projects = [
     description:
       "Contributed to LMS product modules, reporting workflows, and frontend improvements as part of engineering work.",
     stack: ["Next.js", "TypeScript", "SCSS", "Chakra UI"],
-    live: "https://keeron.com/",
-    note: "Commercial client project",
+    live: "https://keeron.com",
+    status: "Commercial client project",
   },
   {
     title: "Restaurant Web App",
@@ -54,8 +93,53 @@ const projects = [
     stack: ["Next.js", "TypeScript", "Auth", "Responsive UI"],
     github: "https://github.com/Asif-Zaman-Suvo/devlinks",
     live: "https://dev-links-finder.vercel.app/",
+  },
+];
+
+function ProjectRepoLinks({ project }: { project: Project }) {
+  const split =
+    project.githubRepoFrontend != null || project.githubRepoBackend != null;
+
+  if (split) {
+    return (
+      <>
+        {project.githubRepoFrontend ? (
+          <a
+            href={project.githubRepoFrontend}
+            target="_blank"
+            rel="noreferrer"
+            className={linkClass}
+          >
+            <GitFork className="h-3.5 w-3.5" />
+            Frontend
+          </a>
+        ) : null}
+        {project.githubRepoBackend ? (
+          <a
+            href={project.githubRepoBackend}
+            target="_blank"
+            rel="noreferrer"
+            className={linkClass}
+          >
+            <GitFork className="h-3.5 w-3.5" />
+            Backend
+          </a>
+        ) : null}
+      </>
+    );
   }
-] as const;
+
+  if (project.github) {
+    return (
+      <a href={project.github} target="_blank" rel="noreferrer" className={linkClass}>
+        <GitFork className="h-3.5 w-3.5" />
+        GitHub
+      </a>
+    );
+  }
+
+  return null;
+}
 
 export function ProjectsSection() {
   return (
@@ -66,7 +150,7 @@ export function ProjectsSection() {
       </Reveal>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {projects.map((project, index) => (
+        {projects?.map((project, index) => (
           <motion.div
             key={project.title}
             initial={{ opacity: 0, y: 20 }}
@@ -92,43 +176,34 @@ export function ProjectsSection() {
               </div>
 
               <div className="mt-5 flex flex-wrap items-center gap-2">
-                {"github" in project ? (
-                  <>
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-[#7c6fff]/35 bg-[#7c6fff]/10 px-3 py-1.5 text-xs text-[#d9d5ff] transition hover:border-[#00d4ff]/60 hover:text-white"
-                    >
-                      <GitFork className="h-3.5 w-3.5" />
-                      GitHub
-                    </a>
-                    {"backend" in project ? (
-                      <a
-                        href={project.backend}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#7c6fff]/35 bg-[#7c6fff]/10 px-3 py-1.5 text-xs text-[#d9d5ff] transition hover:border-[#00d4ff]/60 hover:text-white"
-                      >
-                        <GitFork className="h-3.5 w-3.5" />
-                        Backend
-                      </a>
-                    ) : null}
-                  </>
-                ) : (
+                <ProjectRepoLinks project={project} />
+                {!project.github &&
+                !project.githubRepoFrontend &&
+                !project.githubRepoBackend &&
+                project.status ? (
                   <span className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/60">
-                    {project.note}
+                    {project.status}
                   </span>
-                )}
-                <a
-                  href={project.live}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-[#00d4ff]/40 bg-[#00d4ff]/8 px-3 py-1.5 text-xs text-[#c9f6ff] transition hover:border-[#00d4ff]/70 hover:text-white"
-                >
-                  <Globe className="h-3.5 w-3.5" />
-                  Live
-                </a>
+                ) : null}
+                {project.status &&
+                (project.github ||
+                  project.githubRepoFrontend ||
+                  project.githubRepoBackend) ? (
+                  <span className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/60">
+                    {project.status}
+                  </span>
+                ) : null}
+                {project.live ? (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#00d4ff]/40 bg-[#00d4ff]/8 px-3 py-1.5 text-xs text-[#c9f6ff] transition hover:border-[#00d4ff]/70 hover:text-white"
+                  >
+                    <Globe className="h-3.5 w-3.5" />
+                    Live
+                  </a>
+                ) : null}
               </div>
             </Card>
           </motion.div>
