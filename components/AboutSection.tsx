@@ -1,73 +1,86 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/Reveal";
 
-function Counter({
-  value,
-  suffix = "",
-  duration = 1200,
-}: {
-  value: number;
-  suffix?: string;
-  duration?: number;
-}) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let start = 0;
-    const step = Math.max(16, Math.floor(duration / value));
-    const timer = setInterval(() => {
-      start += 1;
-      setCount(start);
-      if (start >= value) clearInterval(timer);
-    }, step);
-
-    return () => clearInterval(timer);
-  }, [duration, value]);
-
-  return (
-    <span className="text-3xl font-semibold text-white">
-      {count}
-      {suffix}
-    </span>
-  );
-}
-
 export function AboutSection() {
   return (
-    <section id="about" className="py-16">
+    <section id="about" className="section-scroll py-14 sm:py-20 lg:py-28">
       <Reveal>
         <p className="section-kicker">About</p>
-        <h2 className="section-heading">Building polished products at scale.</h2>
-        <p className="mt-4 max-w-3xl text-white/75">
-          Full-Stack Engineer (frontend-focused) with around{" "}
-          <span className="text-[#d9d5ff]">5 years</span> of experience in{" "}
-          <span className="text-[#00d4ff]">React, Next.js, Angular, TypeScript</span>,
-          and Node.js. I build scalable applications with modern architecture,
-          reliable API integration, and a strong product mindset.
+        <h2 className="section-heading">
+          Senior frontend engineering for scalable product systems.
+        </h2>
+        <p className="section-subheading">
+          Senior Frontend Engineer with 5+ years architecting scalable SaaS, enterprise
+          ERPs, and microservices-driven applications using React, Next.js, Angular, and
+          TypeScript. Proven track record driving frontend strategy, building data-dense
+          analytics dashboards, and optimizing high-performance UIs in global remote
+          environments.
         </p>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Reveal delay={0.1}>
-          <Card className="p-5">
-            <Counter value={5} suffix="+" />
-            <p className="mt-2 text-sm text-white/65">Years Experience</p>
+      <div className="mt-10 grid gap-5 sm:mt-12 lg:grid-cols-[1.2fr_0.8fr]">
+        <Reveal delay={0.08}>
+          <Card className="h-full p-5 sm:p-8">
+            <h3 className="text-lg font-semibold text-slate-900">
+              How I deliver product impact
+            </h3>
+            <ul className="mt-5 space-y-4 text-sm leading-relaxed text-slate-600">
+              <li className="flex gap-3">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-500" />
+                Architect responsive, data-dense interfaces and reusable component
+                systems for SaaS and enterprise products.
+              </li>
+              <li className="flex gap-3">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-500" />
+                Build KPI dashboards, reporting workflows, and CMS-driven content systems
+                that improve usability and operational efficiency.
+              </li>
+              <li className="flex gap-3">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-500" />
+                Modernize frontend architecture with Angular, GraphQL, and performance
+                optimization for large-scale datasets.
+              </li>
+            </ul>
           </Card>
         </Reveal>
-        <Reveal delay={0.16}>
-          <Card className="p-5">
-            <Counter value={3} />
-            <p className="mt-2 text-sm text-white/65">Companies</p>
-          </Card>
-        </Reveal>
-        <Reveal delay={0.22}>
-          <Card className="p-5">
-            <Counter value={10} suffix="+" />
-            <p className="mt-2 text-sm text-white/65">Projects Delivered</p>
-          </Card>
+
+        <Reveal delay={0.14}>
+          <div className="grid gap-4">
+            <Card className="p-6">
+              <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+                Education
+              </p>
+              <p className="mt-3 text-lg font-semibold text-slate-900">
+                B.Sc (Hons) in Computer Science & Engineering
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                National University of Bangladesh
+              </p>
+              <p className="mt-2 text-xs text-slate-500">
+                Mar 2016 — Aug 2021 · Dhaka, Bangladesh
+              </p>
+            </Card>
+            <Card className="bg-linear-to-br from-indigo-600 to-blue-600 p-6 text-white">
+              <p className="text-xs font-medium uppercase tracking-wider text-indigo-100">
+                Technical contributions
+              </p>
+              <p className="mt-3 font-semibold">Open Source · Dart Ecosystem</p>
+              <p className="mt-2 text-sm text-indigo-100">
+                Merged pull request into the official Dart documentation site — docs
+                page title overflow fix on small screens.
+              </p>
+              <a
+                href="https://github.com/dart-lang/site-www/pull/7269"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-white underline decoration-indigo-200/80 underline-offset-4 transition hover:decoration-white"
+              >
+                View merged PR #7269
+              </a>
+            </Card>
+          </div>
         </Reveal>
       </div>
     </section>

@@ -3,6 +3,7 @@
 import { useEffect, useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "About", href: "#about" },
@@ -24,7 +25,38 @@ function goToHash(href: string) {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("#hero");
   const menuId = useId();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = ["hero", ...navItems.map((item) => item.href.slice(1))];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target.id) {
+          setActive(`#${visible.target.id}`);
+        }
+      },
+      { rootMargin: "-28% 0px -60% 0px", threshold: [0.15, 0.35, 0.55] },
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const onNavLinkClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
@@ -35,118 +67,150 @@ export function Navbar() {
     if (event.button !== 0) return;
     event.preventDefault();
     setOpen(false);
-    requestAnimationFrame(() => {
-      goToHash(href);
-    });
+    setActive(href);
+    requestAnimationFrame(() => goToHash(href));
   };
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      document.body.style.overflow = "";
+      return;
+    }
+    document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
   }, [open]);
 
   return (
     <>
       <motion.header
-        initial={{ y: -30, opacity: 0 }}
+        initial={{ y: -24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
-        className="fixed inset-x-0 top-0 z-50"
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4"
       >
-        <div className="border-b border-white/10 bg-[#050508]/75 backdrop-blur-xl">
-          <div className="relative mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
-            <nav
-              className="relative z-10 flex h-16 items-center justify-between sm:h-18"
-              aria-label="Primary"
+        <div
+          className={cn(
+            "pointer-events-auto mx-auto max-w-6xl overflow-visible rounded-2xl border transition-all duration-300",
+            scrolled
+              ? "border-slate-200/90 bg-white/95 shadow-lg shadow-slate-900/5 backdrop-blur-xl"
+              : "border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-xl",
+          )}
+        >
+          <nav
+            className="relative z-10 flex h-14 items-center justify-between gap-2 px-3 sm:h-16 sm:px-5 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-3"
+            aria-label="Primary"
+          >
+            <a
+              href="#hero"
+              onClick={(e) => onNavLinkClick(e, "#hero")}
+              className="group flex items-center gap-2 justify-self-start"
             >
-              <a
-                href="#hero"
-                onClick={(e) => onNavLinkClick(e, "#hero")}
-                className="group rounded-xl border border-[#7c6fff]/40 bg-[#7c6fff]/12 px-3 py-1.5 shadow-[0_0_26px_rgba(124,111,255,0.25)] transition-all hover:-translate-y-0.5 hover:border-[#00d4ff]/65 hover:bg-[#00d4ff]/12 hover:shadow-[0_0_34px_rgba(0,212,255,0.3)]"
-              >
-                <span className="font-mono text-base font-extrabold tracking-[0.08em] text-white sm:text-lg lg:text-xl">
-                  <span className="text-violet-400 transition-colors group-hover:text-violet-300">
-                    {"{"}
-                  </span>
-                  <span className="bg-linear-to-r from-violet-200 via-white to-cyan-300 bg-clip-text text-transparent">
-                    M
-                  </span>
-                  <span className="text-cyan-400 transition-colors group-hover:text-cyan-300">
-                    A
-                  </span>
-                  <span className="bg-linear-to-r from-violet-200 via-white to-cyan-300 bg-clip-text text-transparent">
-                    S
-                  </span>
-                  <span className="text-violet-400 transition-colors group-hover:text-violet-300">
-                    {"}"}
-                  </span>
-                </span>
-              </a>
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-600 to-blue-600 text-sm font-bold text-white shadow-md shadow-indigo-500/25 transition group-hover:scale-105">
+                AS
+              </span>
+              <span className="hidden text-sm font-semibold tracking-tight text-slate-900 sm:block">
+                Asif Suvo
+              </span>
+            </a>
 
-              <ul className="hidden items-center gap-1 rounded-full border border-white/12 bg-white/4 px-2 py-1.5 lg:flex">
-                {navItems.map((item) => (
+            <ul className="hidden items-center justify-center gap-1 lg:flex">
+              {navItems.map((item) => {
+                const isActive = active === item.href;
+                return (
                   <li key={item.label}>
                     <a
                       href={item.href}
                       onClick={(e) => onNavLinkClick(e, item.href)}
-                      className="rounded-full px-3 py-1.5 text-sm text-white/75 transition-all hover:bg-white/8 hover:text-[#00d4ff]"
+                      className={cn(
+                        "relative inline-flex rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors",
+                        isActive
+                          ? "text-indigo-700"
+                          : "text-slate-600 hover:text-slate-900",
+                      )}
                     >
                       {item.label}
+                      {isActive ? (
+                        <motion.span
+                          layoutId="nav-indicator"
+                          className="absolute inset-x-2 bottom-1 h-0.5 rounded-full bg-linear-to-r from-indigo-600 to-blue-600"
+                          transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                        />
+                      ) : null}
                     </a>
                   </li>
-                ))}
-              </ul>
+                );
+              })}
+            </ul>
+
+            <div className="flex items-center justify-self-end gap-2">
+              <a
+                href="#contact"
+                onClick={(e) => onNavLinkClick(e, "#contact")}
+                className="hidden rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-slate-800 lg:inline-flex"
+              >
+                Get in touch
+              </a>
 
               <button
                 type="button"
-                className="relative z-20 inline-flex h-11 w-11 shrink-0 touch-manipulation items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:border-[#00d4ff]/50 hover:bg-white/10 hover:text-white lg:hidden"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-indigo-200 hover:text-indigo-700 lg:hidden"
                 aria-expanded={open}
                 aria-controls={menuId}
                 onClick={() => setOpen((v) => !v)}
               >
                 <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
-                {open ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" aria-hidden />}
+                {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
-            </nav>
+            </div>
+          </nav>
 
-            <AnimatePresence initial={false}>
-              {open ? (
-                <motion.div
-                  id={menuId}
-                  role="navigation"
-                  aria-label="Mobile sections"
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative z-10 border-t border-white/10 lg:hidden"
-                >
-                  <ul className="flex max-h-[min(70vh,calc(100dvh-5rem))] flex-col gap-1 overflow-y-auto overscroll-contain py-3 pb-4">
-                    {navItems.map((item, i) => (
-                      <motion.li
-                        key={item.label}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.03 + i * 0.03 }}
+          <AnimatePresence initial={false}>
+            {open ? (
+              <motion.div
+                id={menuId}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.22 }}
+                className="overflow-hidden border-t border-slate-100 lg:hidden"
+              >
+                <ul className="flex flex-col gap-1 p-3">
+                  {navItems.map((item) => (
+                    <li key={item.label}>
+                      <a
+                        href={item.href}
+                        onClick={(e) => onNavLinkClick(e, item.href)}
+                        className={cn(
+                          "block rounded-xl px-4 py-3 text-sm font-medium transition",
+                          active === item.href
+                            ? "bg-indigo-50 text-indigo-700"
+                            : "text-slate-700 hover:bg-slate-50",
+                        )}
                       >
-                        <a
-                          href={item.href}
-                          onClick={(e) => onNavLinkClick(e, item.href)}
-                          className="block rounded-xl px-4 py-3 text-base text-white/85 transition hover:bg-white/8 hover:text-[#00d4ff]"
-                        >
-                          {item.label}
-                        </a>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
-          </div>
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                  <li className="pt-1">
+                    <a
+                      href="#contact"
+                      onClick={(e) => onNavLinkClick(e, "#contact")}
+                      className="block rounded-xl bg-slate-900 px-4 py-3 text-center text-sm font-medium text-white"
+                    >
+                      Get in touch
+                    </a>
+                  </li>
+                </ul>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
       </motion.header>
 
@@ -155,11 +219,10 @@ export function Navbar() {
           <motion.button
             type="button"
             aria-label="Close menu"
-            className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[2px] lg:hidden"
+            className="fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-[2px] lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
             onClick={() => setOpen(false)}
           />
         ) : null}

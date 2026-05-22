@@ -3,127 +3,148 @@
 import { motion } from "framer-motion";
 import {
   BrainCircuit,
-  Code2,
   Database,
+  FlaskConical,
   LayoutGrid,
   Layers3,
-  MessageSquareText,
+  Shapes,
   Wrench,
   Zap,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/Reveal";
+import { cn } from "@/lib/utils";
 
 const groups = [
   {
-    title: "Frameworks",
+    title: "Languages & Frameworks",
     icon: LayoutGrid,
-    items: ["React", "Next.js", "Angular", "NestJS", "Express"],
-  },
-  {
-    title: "Languages",
-    icon: Code2,
-    items: ["TypeScript", "JavaScript", "GraphQL", "REST API"],
-  },
-  {
-    title: "UI/Styling",
-    icon: Layers3,
+    highlight: true,
     items: [
-      "Tailwind",
-      "Ant Design",
-      "shadcn/ui",
-      "MUI",
-      "Chakra UI",
-      "Bootstrap",
-      "Angular Material",
-      "SCSS",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Angular",
+      "NestJS",
+      "GraphQL",
+      "REST API",
     ],
   },
   {
-    title: "State",
+    title: "State Management & Data",
     icon: Zap,
-    items: ["Redux Toolkit", "Zustand", "TanStack Query", "RTK Query"],
+    highlight: true,
+    items: ["Redux Toolkit", "TanStack Query", "Zustand"],
   },
   {
     title: "Databases",
     icon: Database,
-    items: ["MongoDB", "Mongoose", "PostgreSQL", "Supabase", "Prisma"],
+    items: ["MongoDB", "Mongoose", "PostgreSQL", "Prisma", "Supabase"],
   },
   {
-    title: "Tools",
+    title: "UI & Styling",
+    icon: Layers3,
+    items: ["Tailwind CSS", "Chakra UI", "Material UI", "shadcn/ui", "SCSS"],
+  },
+  {
+    title: "Testing",
+    icon: FlaskConical,
+    items: ["Jest", "React Testing Library", "Playwright"],
+  },
+  {
+    title: "Tools & Platforms",
     icon: Wrench,
     items: [
       "Git",
-      "GitHub",
       "Docker",
       "CI/CD",
-      "GCP",
-      "JIRA",
+      "GitHub",
       "Postman",
       "Swagger",
-      "SonarQube",
+      "JIRA",
+      "Google Cloud Platform",
     ],
   },
   {
-    title: "AI Tools",
+    title: "Architecture & Patterns",
+    icon: Shapes,
+    items: [
+      "RBAC",
+      "Microservices",
+      "SSR",
+      "SSG",
+      "Authentication & Authorization",
+      "Performance Optimization",
+      "Reusable Component Design",
+    ],
+  },
+  {
+    title: "AI & Developer Tools",
     icon: BrainCircuit,
     items: [
+      "Cursor AI",
+      "Claude",
       "ChatGPT",
       "GitHub Copilot",
-      "Claude AI",
-      "Cursor AI",
       "Prompt Engineering",
-      "AI-assisted Development",
-    ],
-  },
-  {
-    title: "Soft Skills",
-    icon: MessageSquareText,
-    items: [
-      "Agile Collaboration",
-      "Requirement Analysis",
-      "Code Review",
-      "Technical Ownership",
-      "Performance Optimization",
-      "Sprint Planning",
+      "Agentic Workflows",
+      "AI-Driven Test Automation",
     ],
   },
 ];
 
 export function SkillsSection() {
   return (
-    <section id="skills" className="py-16">
+    <section id="skills" className="section-scroll py-14 sm:py-20 lg:py-28">
       <Reveal>
         <p className="section-kicker">Skills</p>
-        <h2 className="section-heading">Stack that ships production reliably.</h2>
+        <h2 className="section-heading">
+          Production-grade technologies for scalable digital products.
+        </h2>
+        <p className="section-subheading">
+          A modern engineering stack focused on performance, maintainability, and
+          shipping reliable product experiences at scale.
+        </p>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 xl:grid-cols-4">
         {groups.map((group, groupIndex) => {
           const Icon = group.icon;
           return (
-            <Reveal key={group.title} delay={groupIndex * 0.06}>
-              <Card className="p-5 transition-transform duration-300 hover:-translate-y-1">
-                <div className="mb-4 flex items-center gap-2">
-                  <Icon className="h-4 w-4 text-[#00d4ff]" />
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-[#b8aefe]">
-                    {group.title}
-                  </h3>
+            <Reveal key={group.title} delay={groupIndex * 0.05}>
+              <Card
+                className={cn(
+                  "group h-full p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-(--shadow-elevated)",
+                  group.highlight &&
+                    "border-indigo-100 bg-linear-to-br from-white to-indigo-50/40",
+                )}
+              >
+                <div className="mb-4 flex items-center gap-2.5">
+                  <span
+                    className={cn(
+                      "flex h-9 w-9 items-center justify-center rounded-xl",
+                      group.highlight
+                        ? "bg-indigo-100 text-indigo-600"
+                        : "bg-slate-100 text-slate-600",
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <h3 className="text-sm font-semibold text-slate-900">{group.title}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {group.items.map((item, index) => (
-                    <motion.div
+                    <motion.span
                       key={item}
-                      initial={{ opacity: 0, scale: 0.6, y: 8 }}
-                      whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.4 }}
-                      transition={{ duration: 0.25, delay: 0.06 * index }}
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.25, delay: 0.04 * index }}
+                      className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition group-hover:border-indigo-200 group-hover:text-indigo-700"
                     >
-                      <Badge className="border-[#7c6fff]/40 bg-[#7c6fff]/10 text-white transition-all hover:border-[#00d4ff]/60 hover:bg-[#00d4ff]/10 hover:shadow-[0_0_16px_rgba(0,212,255,0.28)]">
-                        {item}
-                      </Badge>
-                    </motion.div>
+                      {item}
+                    </motion.span>
                   ))}
                 </div>
               </Card>

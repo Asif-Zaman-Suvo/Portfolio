@@ -143,13 +143,13 @@ If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \
         id="ai-chat"
         aria-label="Open AI assistant"
         onClick={() => setOpen(true)}
-        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] z-50 rounded-full border border-[#7c6fff]/40 bg-[#120f1f] p-3.5 text-[#d9d5ff] shadow-[0_0_0_1px_rgba(124,111,255,0.4),0_0_28px_rgba(124,111,255,0.35)] max-[380px]:p-3 sm:bottom-6 sm:right-6 sm:p-4"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] z-50 rounded-full border border-indigo-200 bg-white p-3.5 text-indigo-700 shadow-lg shadow-indigo-500/15 max-[380px]:p-3 sm:bottom-6 sm:right-6 sm:p-4"
         animate={{ y: [0, -4, 0] }}
         transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
       >
         <motion.span
           aria-hidden
-          className="absolute inset-0 rounded-full border border-[#7c6fff]/40"
+          className="absolute inset-0 rounded-full border border-indigo-300/50"
           animate={{ scale: [1, 1.25], opacity: [0.6, 0] }}
           transition={{ repeat: Infinity, duration: 1.8 }}
         />
@@ -159,7 +159,7 @@ If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \
       <AnimatePresence>
         {open ? (
           <motion.div
-            className="fixed inset-0 z-[60] flex items-end justify-end bg-black/45 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] sm:items-center sm:p-4 sm:pb-4"
+            className="fixed inset-0 z-[60] flex items-end justify-end bg-slate-900/20 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] backdrop-blur-sm sm:items-center sm:p-4 sm:pb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -171,29 +171,29 @@ If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \
               exit={{ opacity: 0, y: 20, scale: 0.98 }}
               transition={{ duration: 0.25 }}
               onClick={(event) => event.stopPropagation()}
-              className="flex h-[80vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b0b12] shadow-[0_22px_70px_rgba(0,0,0,0.5)]"
+              className="flex h-[80vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[var(--shadow-elevated)]"
             >
-              <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-                <div className="flex items-center gap-2 text-sm text-white">
-                  <Sparkles className="h-4 w-4 text-[#00d4ff]" />
+              <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-900">
+                  <Sparkles className="h-4 w-4 text-indigo-600" />
                   Ask Asif AI
                 </div>
                 <button
                   onClick={() => setOpen(false)}
-                  className="rounded-md p-1 text-white/60 transition hover:bg-white/10 hover:text-white"
+                  className="rounded-md p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
                   aria-label="Close chat"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
 
-              <div className="border-b border-white/10 px-3 py-2">
+              <div className="border-b border-slate-100 px-3 py-2">
                 <div className="flex flex-wrap gap-2">
                   {quickQuestions.map((question) => (
                     <button
                       key={question}
                       onClick={() => sendMessage(question)}
-                      className="rounded-full border border-[#7c6fff]/35 bg-[#7c6fff]/10 px-3 py-1 text-xs text-[#d9d5ff] transition hover:border-[#00d4ff]/60 hover:text-white"
+                      className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 transition hover:border-indigo-200 hover:text-indigo-700"
                     >
                       {question}
                     </button>
@@ -208,8 +208,8 @@ If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \
                     className={cn(
                       "max-w-[88%] rounded-xl px-3 py-2 text-sm leading-6",
                       message.role === "assistant"
-                        ? "bg-white/5 text-white/85"
-                        : "ml-auto bg-[#7c6fff] text-white",
+                        ? "bg-slate-100 text-slate-700"
+                        : "ml-auto bg-indigo-600 text-white",
                     )}
                   >
                     {message.content}
@@ -217,10 +217,10 @@ If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \
                 ))}
 
                 {loading ? (
-                  <div className="inline-flex items-center gap-1 rounded-xl bg-white/5 px-3 py-2 text-white/70">
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#00d4ff] [animation-delay:-0.2s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#00d4ff] [animation-delay:-0.1s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#00d4ff]" />
+                  <div className="inline-flex items-center gap-1 rounded-xl bg-slate-100 px-3 py-2 text-slate-500">
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-500 [animation-delay:-0.2s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-500 [animation-delay:-0.1s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-indigo-500" />
                   </div>
                 ) : null}
               </div>
@@ -230,14 +230,14 @@ If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \
                   event.preventDefault();
                   void sendMessage();
                 }}
-                className="border-t border-white/10 p-3"
+                className="border-t border-slate-100 p-3"
               >
-                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/30 px-3 py-2">
+                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
                   <input
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
                     placeholder="Ask about stack, experience, availability..."
-                    className="flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/40"
+                    className="flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
                   />
                   <Button
                     type="submit"

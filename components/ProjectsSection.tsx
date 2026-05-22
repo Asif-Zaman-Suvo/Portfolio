@@ -17,23 +17,39 @@ type Project = {
 };
 
 const linkClass =
-  "inline-flex items-center gap-1.5 rounded-lg border border-[#7c6fff]/35 bg-[#7c6fff]/10 px-3 py-1.5 text-xs text-[#d9d5ff] transition hover:border-[#00d4ff]/60 hover:text-white";
+  "inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-200 hover:text-indigo-700 hover:shadow-md";
 
 const projects: Project[] = [
   {
+    title: "AI Interview Coach",
+    description:
+      "Interview preparation platform with mock sessions, voice capture, scoring, admin question bank, and analytics dashboards.",
+    stack: [
+      "Next.js 16",
+      "NestJS 11",
+      "TypeScript",
+      "MongoDB",
+      "Better Auth",
+      "TanStack Query",
+      "Recharts",
+    ],
+    githubRepoFrontend: "https://github.com/Asif-Zaman-Suvo/ai-interview-coach",
+    githubRepoBackend:
+      "https://github.com/Asif-Zaman-Suvo/ai-interview-coach-backend",
+    status: "In Progress",
+  },
+  {
     title: "Doctor Khuji",
     description:
-      "Doctors portal where patients book appointments, doctors manage practice, and admins control approvals with role-based flows.",
+      "Healthcare portal where patients book appointments, doctors manage practice, and admins control approvals with role-based flows.",
     stack: [
       "Next.js",
       "TypeScript",
       "Tailwind",
       "Prisma",
       "PostgreSQL",
-      "Playright",
-      "Agentic-Workflow",
-      "Shadcn/ui",
       "Supabase",
+      "shadcn/ui",
     ],
     github: "https://github.com/Asif-Zaman-Suvo/Doctor-Khuji",
     live: "https://doctor-khuji.vercel.app/",
@@ -41,8 +57,8 @@ const projects: Project[] = [
   {
     title: "Ticket Booking System",
     description:
-      "E-ticket web app for searching routes, booking bus tickets, and handling modern user booking journeys.",
-    stack: ["Next.js", "TypeScript", "Tailwind", "shadcn/ui","Supabase",'Better-Auth','Nestjs'],
+      "E-ticket platform for route search, seat booking, and modern passenger booking journeys.",
+    stack: ["Next.js", "TypeScript", "Tailwind", "Supabase", "NestJS"],
     github: "https://github.com/Asif-Zaman-Suvo/Ticket-Booking-System-Frontend",
     live: "https://suvo-e-ticket-booking.vercel.app",
     status: "In Progress",
@@ -50,49 +66,21 @@ const projects: Project[] = [
   {
     title: "Smartphone Management Dashboard",
     description:
-      "Role-based product and sales dashboard with authentication, inventory operations, and invoice generation flows.",
-    stack: [
-      "React",
-      "TypeScript",
-      "Redux Toolkit",
-      "RTK Query",
-      "Tailwind",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "mongoose",
-      "jwt",
-      "ZOD",
-      "bcrypt",
-      "cloudinary",
-    ],
-    githubRepoFrontend: "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Frontend",
-    githubRepoBackend: "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Backend",
+      "Role-based inventory and sales dashboard with authentication, operations workflows, and invoice generation.",
+    stack: ["React", "TypeScript", "RTK Query", "Node.js", "Express", "MongoDB"],
+    githubRepoFrontend:
+      "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Frontend",
+    githubRepoBackend:
+      "https://github.com/Asif-Zaman-Suvo/Smartphone-Management-Backend",
     live: "https://smartphone-management-frontend-suvo.vercel.app/",
   },
   {
     title: "LMS Platform",
     description:
-      "Contributed to LMS product modules, reporting workflows, and frontend improvements as part of engineering work.",
+      "Contributed to LMS product modules, reporting workflows, and frontend improvements for a commercial learning platform.",
     stack: ["Next.js", "TypeScript", "SCSS", "Chakra UI"],
     live: "https://keeron.com",
     status: "Commercial client project",
-  },
-  {
-    title: "Restaurant Web App",
-    description:
-      "Food delivery web app with category-based browsing, cart flow, and Firebase-backed authentication.",
-    stack: ["React", "JavaScript", "Firebase", "React Router", "Bootstrap"],
-    github: "https://github.com/Asif-Zaman-Suvo/hot-onion-restaurant",
-    live: "https://hot-onion-restaurant-suvo176.web.app/",
-  },
-  {
-    title: "DevLinks",
-    description:
-      "Developer-focused links management and profile hub app with a clean authentication-led experience.",
-    stack: ["Next.js", "TypeScript", "Auth", "Responsive UI"],
-    github: "https://github.com/Asif-Zaman-Suvo/devlinks",
-    live: "https://dev-links-finder.vercel.app/",
   },
 ];
 
@@ -141,72 +129,72 @@ function ProjectRepoLinks({ project }: { project: Project }) {
   return null;
 }
 
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.45, delay: index * 0.06 }}
+    >
+      <Card className="group h-full p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-(--shadow-elevated) sm:p-5">
+        <div className="mb-3 flex items-start justify-between gap-2">
+          <h3 className="text-lg font-semibold text-slate-900">{project.title}</h3>
+          <ArrowUpRight className="h-4 w-4 shrink-0 text-slate-400 transition group-hover:text-indigo-600" />
+        </div>
+
+        <p className="text-sm leading-6 text-slate-600">{project.description}</p>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {project.stack.map((item) => (
+            <span
+              key={item}
+              className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-600"
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <ProjectRepoLinks project={project} />
+          {project.status ? (
+            <span className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-800">
+              {project.status}
+            </span>
+          ) : null}
+          {project.live ? (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 transition hover:border-blue-300 hover:bg-blue-100"
+            >
+              <Globe className="h-3.5 w-3.5" />
+              Live
+            </a>
+          ) : null}
+        </div>
+      </Card>
+    </motion.div>
+  );
+}
+
 export function ProjectsSection() {
   return (
-    <section id="projects" className="py-16">
+    <section id="projects" className="section-scroll py-14 sm:py-20 lg:py-28">
       <Reveal>
         <p className="section-kicker">Projects</p>
-        <h2 className="section-heading">Selected product engineering work.</h2>
+        <h2 className="section-heading">Selected software engineering work.</h2>
+        <p className="section-subheading">
+          Applications and platforms built across healthcare, commerce, enterprise
+          systems, and interview preparation workflows.
+        </p>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {projects?.map((project, index) => (
-          <motion.div
-            key={project.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.4, delay: index * 0.08 }}
-          >
-            <Card className="group h-full p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#00d4ff]/45">
-              <div className="mb-3 flex items-start justify-between gap-2">
-                <h3 className="text-lg font-semibold text-white">{project.title}</h3>
-                <ArrowUpRight className="h-4 w-4 text-white/40 transition group-hover:text-[#00d4ff]" />
-              </div>
-              <p className="text-sm leading-6 text-white/72">{project.description}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {project.stack.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-[#7c6fff]/35 bg-[#7c6fff]/10 px-2.5 py-1 text-xs text-[#d9d5ff]"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-5 flex flex-wrap items-center gap-2">
-                <ProjectRepoLinks project={project} />
-                {!project.github &&
-                !project.githubRepoFrontend &&
-                !project.githubRepoBackend &&
-                project.status ? (
-                  <span className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/60">
-                    {project.status}
-                  </span>
-                ) : null}
-                {project.status &&
-                (project.github ||
-                  project.githubRepoFrontend ||
-                  project.githubRepoBackend) ? (
-                  <span className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/60">
-                    {project.status}
-                  </span>
-                ) : null}
-                {project.live ? (
-                  <a
-                    href={project.live}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#00d4ff]/40 bg-[#00d4ff]/8 px-3 py-1.5 text-xs text-[#c9f6ff] transition hover:border-[#00d4ff]/70 hover:text-white"
-                  >
-                    <Globe className="h-3.5 w-3.5" />
-                    Live
-                  </a>
-                ) : null}
-              </div>
-            </Card>
-          </motion.div>
+      <div className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+        {projects.map((project, index) => (
+          <ProjectCard key={project.title} project={project} index={index} />
         ))}
       </div>
     </section>

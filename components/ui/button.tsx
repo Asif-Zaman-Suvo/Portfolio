@@ -5,20 +5,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7c6fff] disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-[#7c6fff] text-white hover:-translate-y-0.5 hover:bg-[#8d81ff] shadow-[0_8px_24px_rgba(124,111,255,0.35)]",
+          "bg-linear-to-r from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-500/20 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/30",
         outline:
-          "border border-[#7c6fff]/50 bg-white/0 text-[#d9d5ff] hover:-translate-y-0.5 hover:border-[#7c6fff] hover:text-white",
-        glow: "border border-[#00d4ff]/60 bg-[#050508] text-[#c9f6ff] shadow-[0_0_0_1px_rgba(0,212,255,0.25),0_0_24px_rgba(0,212,255,0.25)] hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgba(0,212,255,0.4),0_0_34px_rgba(0,212,255,0.32)]",
+          "border border-slate-200 bg-white text-slate-700 shadow-sm hover:-translate-y-0.5 hover:border-indigo-200 hover:text-indigo-700 hover:shadow-md",
+        glow:
+          "border border-indigo-200/80 bg-white text-indigo-700 shadow-sm hover:-translate-y-0.5 hover:border-indigo-300 hover:bg-indigo-50/50 hover:shadow-md",
+        ghost:
+          "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
       },
       size: {
         default: "h-11 px-5",
-        sm: "h-9 px-3",
-        lg: "h-12 px-6",
+        sm: "h-9 px-3.5 text-xs",
+        lg: "h-12 px-7 text-[15px]",
       },
     },
     defaultVariants: {

@@ -8,9 +8,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Md Asifuzzaman Suvo | Frontend Engineer",
+  title: "Md Asifuzzaman Suvo · Software Engineer",
   description:
-    "Portfolio of Md Asifuzzaman Suvo, Frontend Engineer specializing in React, Next.js, Angular, and TypeScript.",
+    "Portfolio of Md Asifuzzaman Suvo — Software Engineer specializing in React, Next.js, Angular, NestJS, TypeScript, and scalable web applications.",
 };
 
 export const viewport = {
