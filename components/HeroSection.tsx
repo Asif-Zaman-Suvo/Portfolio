@@ -120,33 +120,37 @@ export function HeroSection() {
           </Reveal>
 
           <Reveal delay={0.25}>
-            <div className="mt-8 grid gap-3 min-[480px]:grid-cols-2 lg:grid-cols-3">
-              {heroStats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.35 + index * 0.08, duration: 0.45 }}
-                    className="premium-card p-4"
-                  >
-                    <div className="mb-3 flex items-center justify-between">
-                      <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                        {stat.label}
-                      </span>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
-                        <Icon className="h-4 w-4" />
-                      </span>
-                    </div>
-                    <p className="text-3xl font-semibold tracking-tight text-slate-900">
-                      {stat.value}
-                    </p>
-                    <p className="mt-1 text-xs text-slate-500">{stat.detail}</p>
-                  </motion.div>
-                );
-              })}
+            <div className="mt-10 border-t border-slate-200/80 pt-8">
+              <div className="grid gap-8 sm:grid-cols-3 sm:gap-6">
+                {heroStats.map((stat, index) => {
+                  const Icon = stat.icon;
+                  return (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + index * 0.08, duration: 0.45 }}
+                      className={
+                        index > 0
+                          ? "sm:border-l sm:border-slate-200/80 sm:pl-6"
+                          : undefined
+                      }
+                    >
+                      <div className="mb-2 flex items-center gap-2">
+                        <Icon className="h-4 w-4 text-indigo-600" />
+                        <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 sm:text-xs">
+                          {stat.label}
+                        </span>
+                      </div>
+                      <p className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+                        {stat.value}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-500 sm:text-sm">{stat.detail}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </Reveal>
         </div>

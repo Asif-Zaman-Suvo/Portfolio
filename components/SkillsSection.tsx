@@ -13,13 +13,11 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/Reveal";
-import { cn } from "@/lib/utils";
 
 const groups = [
   {
     title: "Languages & Frameworks",
     icon: LayoutGrid,
-    highlight: true,
     items: [
       "JavaScript",
       "TypeScript",
@@ -34,7 +32,6 @@ const groups = [
   {
     title: "State Management & Data",
     icon: Zap,
-    highlight: true,
     items: ["Redux Toolkit", "TanStack Query", "Zustand"],
   },
   {
@@ -113,22 +110,9 @@ export function SkillsSection() {
           const Icon = group.icon;
           return (
             <Reveal key={group.title} delay={groupIndex * 0.05}>
-              <Card
-                className={cn(
-                  "group h-full p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-(--shadow-elevated)",
-                  group.highlight &&
-                    "border-indigo-100 bg-linear-to-br from-white to-indigo-50/40",
-                )}
-              >
+              <Card className="group h-full p-5 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-100 hover:shadow-(--shadow-elevated)">
                 <div className="mb-4 flex items-center gap-2.5">
-                  <span
-                    className={cn(
-                      "flex h-9 w-9 items-center justify-center rounded-xl",
-                      group.highlight
-                        ? "bg-indigo-100 text-indigo-600"
-                        : "bg-slate-100 text-slate-600",
-                    )}
-                  >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
                     <Icon className="h-4 w-4" />
                   </span>
                   <h3 className="text-sm font-semibold text-slate-900">{group.title}</h3>
