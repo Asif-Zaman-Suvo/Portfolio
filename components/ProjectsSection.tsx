@@ -30,6 +30,8 @@ const projects: Project[] = [
       "TypeScript",
       "MongoDB",
       "Better Auth",
+      "RBAC",
+      "Notification system",
       "TanStack Query",
       "Recharts",
     ],
