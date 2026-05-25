@@ -21,12 +21,12 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Variable | Required | Description |
 |---|---|---|
-| `GROQ_API_KEY` | Yes | Groq API key for `/api/chat` |
-| `NEXT_PUBLIC_CV_URL` | No | CV download URL (defaults to `/cv.pdf`) |
+| `GROQ_API_KEY` | Yes | Groq API key for `/api/chat` (mark as **secret** in Netlify) |
+| `NEXT_PUBLIC_CV_URL` | No | CV download URL (defaults to `/cv.pdf`). **Do not** mark as secret — it is public by design |
 
 **Local:** set keys in `.env.local` (not committed).
 
-**Production (Netlify):** Site configuration → Environment variables → add `GROQ_API_KEY`, then redeploy.
+**Production (Netlify):** Site configuration → Environment variables → add `GROQ_API_KEY` (sensitive), then redeploy. If you use `NEXT_PUBLIC_CV_URL`, leave it as a normal (non-secret) variable.
 
 ## Scripts
 

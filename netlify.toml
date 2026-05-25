@@ -1,0 +1,3 @@
+[build.environment]
+  # NEXT_PUBLIC_* values are embedded in client bundles by design — not secrets.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_CV_URL"
