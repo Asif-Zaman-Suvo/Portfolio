@@ -128,8 +128,7 @@ export function ChatBot() {
         {
           role: "assistant",
           content: `Something went wrong: ${hint}
-
-If you use Zhipu GLM: confirm \`ZHIPU_API_KEY\` in \`.env.local\`, use a valid \`GLM_MODEL\` from the [model list](https://docs.bigmodel.cn/cn/guide/start/model-overview), and restart \`npm run dev\`.`,
+          `,
         },
       ]);
     } finally {

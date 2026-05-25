@@ -46,8 +46,35 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+a,
+button,
+[role="button"],
+label[for],
+summary,
+select,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="file"]::file-selector-button {
+  cursor: pointer;
+}
+
+button:disabled,
+[disabled],
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
 .section-scroll {
   scroll-margin-top: var(--nav-offset);
+}
+
+.section-padding {
+  @apply py-10 sm:py-12 lg:py-16;
+}
+
+.section-content {
+  @apply mt-7 sm:mt-9;
 }
 
 .section-kicker {

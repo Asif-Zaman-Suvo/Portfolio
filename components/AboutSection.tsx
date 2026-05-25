@@ -5,7 +5,7 @@ import { Reveal } from "@/components/Reveal";
 
 export function AboutSection() {
   return (
-    <section id="about" className="section-scroll py-14 sm:py-20 lg:py-28">
+    <section id="about" className="section-scroll section-padding">
       <Reveal>
         <p className="section-kicker">About</p>
         <h2 className="section-heading">
@@ -20,7 +20,7 @@ export function AboutSection() {
         </p>
       </Reveal>
 
-      <div className="mt-10 grid gap-5 sm:mt-12 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="section-content grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
         <Reveal delay={0.08}>
           <Card className="h-full p-5 sm:p-8">
             <h3 className="text-lg font-semibold text-slate-900">

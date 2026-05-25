@@ -7,6 +7,7 @@ import {
   GitFork,
   Link2,
   Mail,
+  MessageCircle,
   Phone,
   Sparkles,
 } from "lucide-react";
@@ -14,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/Reveal";
 
-const primaryContacts = [
+const contactLinks = [
   {
     label: "Email",
     value: "asif.zaman.suvo@gmail.com",
@@ -24,46 +25,53 @@ const primaryContacts = [
   },
   {
     label: "Phone",
-    value: "+88 01521331328",
-    href: "tel:+8801521331328",
+    value: "+880 1950 931070",
+    href: "tel:+8801950931070",
     icon: Phone,
     external: false,
   },
-];
-
-const socialLinks = [
+  {
+    label: "WhatsApp",
+    value: "+880 1521 331328",
+    href: "https://wa.me/8801521331328",
+    icon: MessageCircle,
+    external: true,
+  },
   {
     label: "LinkedIn",
-    display: "Md Asifuzzaman Suvo",
+    value: "Md Asifuzzaman Suvo",
     href: "https://www.linkedin.com/in/md-asifuzzaman-shuvo",
     icon: Link2,
-    accent: "from-[#0A66C2]/10 to-blue-50 border-blue-100 text-[#0A66C2]",
+    external: true,
   },
   {
     label: "GitHub",
-    display: "View profile",
+    value: "View profile",
     href: "https://github.com/asif-zaman-suvo",
     icon: GitFork,
-    accent: "from-slate-100 to-slate-50 border-slate-200 text-slate-800",
+    external: true,
   },
   {
     label: "LeetCode",
-    display: "Asif_Suvo",
+    value: "Asif_Suvo",
     href: "https://leetcode.com/u/Asif_Suvo",
     icon: Code2,
-    accent: "from-amber-50 to-orange-50 border-amber-200 text-amber-700",
+    external: true,
   },
 ];
 
+const contactCardClass =
+  "group flex items-center gap-3 rounded-2xl border border-slate-200/90 bg-white/90 p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md sm:gap-4 sm:p-5";
+
 export function ContactSection() {
   return (
-    <section id="contact" className="section-scroll pt-14 pb-6 sm:pt-20 sm:pb-8 lg:pt-28 lg:pb-10">
+    <section id="contact" className="section-scroll section-padding pb-4 sm:pb-6">
       <Reveal>
         <div className="mx-auto max-w-3xl text-center">
           <Badge className="border-emerald-200 bg-emerald-50 text-emerald-700">
             Open to opportunities
           </Badge>
-          <p className="section-kicker mt-6">Contact</p>
+          <p className="section-kicker mt-4 sm:mt-5">Contact</p>
           <h2 className="section-heading">Let&apos;s connect and build together.</h2>
           <p className="section-subheading mx-auto">
             Open to remote and relocation roles. Reach out for senior frontend engineering
@@ -73,7 +81,7 @@ export function ContactSection() {
       </Reveal>
 
       <Reveal delay={0.08}>
-        <div className="relative mx-auto mt-8 max-w-4xl overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-(--shadow-elevated) sm:mt-12 sm:rounded-4xl">
+        <div className="relative mx-auto mt-7 max-w-4xl overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-(--shadow-elevated) sm:mt-9 sm:rounded-4xl">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 bg-linear-to-br from-indigo-500/8 via-transparent to-blue-500/10"
@@ -85,15 +93,17 @@ export function ContactSection() {
 
           <div className="relative p-4 sm:p-8 lg:p-10">
             <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-              {primaryContacts.map(({ label, value, href, icon: Icon }, index) => (
+              {contactLinks.map(({ label, value, href, icon: Icon, external }, index) => (
                 <motion.a
                   key={label}
                   href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noreferrer" : undefined}
                   initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 + index * 0.06 }}
-                  className="group flex items-center gap-3 rounded-2xl border border-slate-200/90 bg-white/90 p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md sm:gap-4 sm:p-5"
+                  className={contactCardClass}
                 >
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-500/20 transition group-hover:scale-105 sm:h-12 sm:w-12">
                     <Icon className="h-5 w-5" />
@@ -107,35 +117,6 @@ export function ContactSection() {
                     </span>
                   </span>
                   <ArrowUpRight className="hidden h-4 w-4 shrink-0 text-slate-300 transition group-hover:text-indigo-600 sm:block" />
-                </motion.a>
-              ))}
-            </div>
-
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-6 sm:grid-cols-3">
-              {socialLinks.map(({ label, display, href, icon: Icon, accent }, index) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.18 + index * 0.06 }}
-                  className={`group flex flex-col gap-3 rounded-2xl border bg-linear-to-br p-4 transition hover:-translate-y-0.5 hover:shadow-md ${accent}`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/80 shadow-sm">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <ArrowUpRight className="h-4 w-4 opacity-40 transition group-hover:opacity-100" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider opacity-70">
-                      {label}
-                    </p>
-                    <p className="mt-1 text-sm font-semibold">{display}</p>
-                  </div>
                 </motion.a>
               ))}
             </div>

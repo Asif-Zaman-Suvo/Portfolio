@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { AiAssistantSection } from "@/components/AiAssistantSection";
 import { AboutSection } from "@/components/AboutSection";
 import { ChatBot } from "@/components/ChatBot";
 import { ContactSection } from "@/components/ContactSection";
@@ -31,8 +32,9 @@ export default function Home() {
 
       <Navbar />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-3 pb-20 pt-[calc(var(--nav-offset)+0.75rem)] sm:px-6 sm:pb-24 sm:pt-[calc(var(--nav-offset)+1rem)] lg:px-8">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-3 pb-12 pt-[calc(var(--nav-offset)+0.75rem)] sm:px-6 sm:pb-16 sm:pt-[calc(var(--nav-offset)+1rem)] lg:px-8">
         <HeroSection />
+        <AiAssistantSection />
         <AboutSection />
         <SkillsSection />
         <ExperienceTimeline />

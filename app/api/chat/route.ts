@@ -5,155 +5,61 @@ type ChatMessage = {
   content: string;
 };
 
-const SYSTEM_PROMPT = `You are Asif's portfolio assistant.
-Only answer questions related to Md Asifuzzaman Suvo's:
-- skills and tech stack
-- work experience and achievements
-- education
-- contact and availability (remote/relocation)
+const SYSTEM_PROMPT = `You are "Asif AI" — a friendly, concise assistant on the portfolio website of Md Ashfuzzaman Suve, a Senior Frontend Engineer based in Bangladesh.
 
-If a question is unrelated, politely refuse and steer back to Asif's profile.
-Keep responses concise, professional, and helpful.`;
+Your ONLY job is to answer questions about Asif using the information below. Never make up anything outside this data. If a question isn't covered, say: "I don't have that info — you can reach Asif directly at asif.zaman.suve@gmail.com"
 
-const BIGMODEL_URL =
-  "https://open.bigmodel.cn/api/paas/v4/chat/completions";
+Keep answers conversational, friendly, and short (2-4 sentences max). No bullet walls — keep it human.
 
-/**
- * Default model — `glm-4` is not valid on current PaaS v4; use a listed id, e.g.
- * glm-4.7-flash, glm-4-flash-250414, glm-4.5-air. Override with GLM_MODEL in .env.local.
- * @see https://docs.bigmodel.cn/cn/guide/start/model-overview
- */
-const DEFAULT_GLM_MODEL = "glm-4.7-flash";
+--- ABOUT ASIF ---
+Name: Md Asifuzzaman Suvo (goes by Asif)
+Role: Senior Frontend Engineer
+Experience: 5+ years
+Location: Bangladesh | Open to remote globally
 
-function zhipuErrorUserMessage(detail: string): string | undefined {
-  try {
-    const parsed = JSON.parse(detail) as {
-      error?: { code?: string; message?: string };
-    };
-    const code = parsed.error?.code;
-    const msg = parsed.error?.message ?? "";
+--- TECH STACK ---
+Core: React, Next.js, TypeScript, Angular, NestJS, GraphQL
+State: Redux Toolkit, NgRx, Zustand, TanStack Query
+Databases: PostgreSQL, MongoDB, Redis
+UI: Tailwind CSS, shadcn/ui, Radix UI, Framer Motion
+Testing: Jest, Playwright, Cypress, React Testing Library
+Tools: Docker, GitHub Actions, AWS, Vercel, Figma
+Architecture: Micro-frontends, Module Federation, DDD, CQRS
+AI tools: LangChain, OpenAI SDK, Cursor, GitHub Copilot
 
-    if (code === "1305" || msg.includes("访问量")) {
-      return (
-        "This model is temporarily at capacity (too many requests). " +
-        "Wait a minute and try again, or set GLM_MODEL in .env.local to another model " +
-        "(for example glm-4-flash-250414 or glm-4.5-flash), then restart your dev server."
-      );
-    }
-  } catch {
-    // not JSON
-  }
-  return undefined;
-}
+--- EXPERIENCE ---
+SELISE Group (current): Software Engineer — enterprise SaaS, micro-frontend architecture, performance optimization (+35% engagement, -30% bundle size, +25% efficiency)
+ReformedTech: Junior Software Engineer — e-commerce and SaaS delivery pipelines
+eGeneration: Intern — government digital services across Bangladesh (64 districts)
 
-async function chatWithGlm(
-  apiKey: string,
-  model: string,
-  messages: ChatMessage[],
-) {
-  const glmMessages = [
-    { role: "system" as const, content: SYSTEM_PROMPT },
-    ...messages.map((m) => ({
-      role: m.role === "assistant" ? ("assistant" as const) : ("user" as const),
-      content: m.content,
-    })),
-  ];
+--- EDUCATION ---
+B.Sc (Hons) in Computer Science & Engineering
 
-  const res = await fetch(BIGMODEL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      messages: glmMessages,
-      max_tokens: 1024,
-    }),
-  });
+--- PROJECTS ---
+1. AI Interview Coach — AI-powered mock interview platform with real-time feedback
+2. Doctor Khuj — healthcare appointment booking and doctor discovery system
+3. Ticket Booking System — scalable ticketing platform with seat management
+4. Smartphone Management Dashboard — enterprise admin panel for device fleet management
+5. LMS Platform — learning management system for online education
 
-  if (!res.ok) {
-    const detail = await res.text();
-    const userMessage = zhipuErrorUserMessage(detail);
-    const status =
-      res.status === 429 || detail.includes('"1305"') ? 503 : res.status;
-    return NextResponse.json(
-      {
-        error: "GLM request failed",
-        detail,
-        ...(userMessage ? { userMessage } : {}),
-      },
-      { status },
-    );
-  }
+--- AVAILABILITY ---
+Open to: Remote full-time, contract, freelance
+Preferred roles: Senior Frontend Engineer, Frontend Architect, Tech Lead
+Timezone: GMT+6 (Bangladesh), comfortable working across global timezones
 
-  const data = (await res.json()) as {
-    choices?: Array<{ message?: { content?: string } }>;
-  };
-  const rawMessage = data.choices?.[0]?.message?.content;
-  const message =
-    typeof rawMessage === "string" && rawMessage.trim().length > 0
-      ? rawMessage.trim()
-      : "I can help with Asif's background, stack, and availability.";
-
-  return NextResponse.json({ message });
-}
-
-async function chatWithAnthropic(
-  apiKey: string,
-  messages: ChatMessage[],
-) {
-  const anthropicResponse = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 600,
-      system: SYSTEM_PROMPT,
-      messages: messages.map((message) => ({
-        role: message.role === "assistant" ? "assistant" : "user",
-        content: message.content,
-      })),
-    }),
-  });
-
-  if (!anthropicResponse.ok) {
-    const detail = await anthropicResponse.text();
-    return NextResponse.json(
-      { error: "Anthropic request failed", detail },
-      { status: anthropicResponse.status },
-    );
-  }
-
-  const data = (await anthropicResponse.json()) as {
-    content?: Array<{ type: string; text?: string }>;
-  };
-  const rawMessage = data.content?.find((item) => item.type === "text")?.text;
-  const message =
-    typeof rawMessage === "string" && rawMessage.trim().length > 0
-      ? rawMessage.trim()
-      : "I can help with Asif's background, stack, and availability.";
-
-  return NextResponse.json({ message });
-}
+--- CONTACT ---
+Email: asif.zaman.suvo@gmail.com
+Phone: +880 1950 931070
+LinkedIn: Md Asifuzzaman Suvo
+GitHub: Asif-Zaman-Suvo`;
 
 export async function POST(request: Request) {
   try {
-    const zhipuKey =
-      process.env.ZHIPU_API_KEY ?? process.env.BIGMODEL_API_KEY;
-    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
 
-    if (!zhipuKey && !anthropicKey) {
+    if (!apiKey) {
       return NextResponse.json(
-        {
-          error: "Missing API key.",
-          detail:
-            "Set ZHIPU_API_KEY (or BIGMODEL_API_KEY) for GLM, or ANTHROPIC_API_KEY for Claude, in .env.local",
-        },
+        { error: "Set GROQ_API_KEY in .env.local, then restart dev server." },
         { status: 500 },
       );
     }
@@ -161,13 +67,45 @@ export async function POST(request: Request) {
     const body = (await request.json()) as { messages?: ChatMessage[] };
     const messages = Array.isArray(body.messages) ? body.messages : [];
 
-    if (zhipuKey) {
-      const model =
-        process.env.GLM_MODEL?.trim() || DEFAULT_GLM_MODEL;
-      return chatWithGlm(zhipuKey, model, messages);
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        max_tokens: 300,
+        temperature: 0.7,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...messages.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        ],
+      }),
+    });
+
+    if (!res.ok) {
+      const detail = await res.text();
+      return NextResponse.json(
+        { error: "Groq request failed", detail },
+        { status: res.status },
+      );
     }
 
-    return chatWithAnthropic(anthropicKey!, messages);
+    const data = (await res.json()) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
+
+    const rawMessage = data.choices?.[0]?.message?.content;
+    const message =
+      typeof rawMessage === "string" && rawMessage.trim().length > 0
+        ? rawMessage.trim()
+        : "I can help with Asif's background, stack, and availability.";
+
+    return NextResponse.json({ message });
   } catch (error) {
     return NextResponse.json(
       {

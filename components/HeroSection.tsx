@@ -45,7 +45,7 @@ export function HeroSection() {
   const [imageFailed, setImageFailed] = useState(false);
 
   return (
-    <section id="hero" className="section-scroll relative pb-16 pt-0 sm:pb-24 lg:pb-32">
+    <section id="hero" className="section-scroll relative pb-16 pt-0 sm:pb-20 lg:pb-28">
       <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
         <div>
           <Reveal>
@@ -107,20 +107,17 @@ export function HeroSection() {
                   <ArrowUpRight className="h-4 w-4" />
                 </Button>
               </a>
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto"
-                onClick={() => window.dispatchEvent(new Event("open-asif-ai-chat"))}
-              >
-                <Sparkles className="h-4 w-4 text-indigo-600" />
-                Ask My AI
-              </Button>
+              <a href="#ai-assistant" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  <Sparkles className="h-4 w-4 text-indigo-600" />
+                  Ask My AI Assistant
+                </Button>
+              </a>
             </div>
           </Reveal>
 
           <Reveal delay={0.25}>
-            <div className="mt-10 border-t border-slate-200/80 pt-8">
+            <div className="mt-10 border-t border-slate-200/80 pt-8 sm:mt-12 sm:pt-10">
               <div className="grid gap-8 sm:grid-cols-3 sm:gap-6">
                 {heroStats.map((stat, index) => {
                   const Icon = stat.icon;
