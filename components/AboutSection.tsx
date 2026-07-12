@@ -9,11 +9,11 @@ export function AboutSection() {
       <Reveal>
         <p className="section-kicker">About</p>
         <h2 className="section-heading">
-          Senior frontend engineering for scalable product systems.
+          Frontend Focused Full Stack Engineer for scalable product systems.
         </h2>
         <p className="section-subheading">
-          Senior Frontend Engineer with 5+ years architecting scalable SaaS, enterprise
-          ERPs, and microservices-driven applications using React, Next.js, Angular, and
+          Frontend Focused Full Stack Engineer with 5+ years architecting scalable SaaS, enterprise
+          ERPs, and microservices-driven applications using React, Next.js, Angular, Node, and
           TypeScript. Proven track record driving frontend strategy, building data-dense
           analytics dashboards, and optimizing high-performance UIs in global remote
           environments.

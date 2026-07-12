@@ -35,12 +35,15 @@ const projects: Project[] = [
       "Notification system",
       "TanStack Query",
       "Recharts",
+      'Redis',
+      'Docker',
     ],
     spotlight: true,
     githubRepoFrontend: "https://github.com/Asif-Zaman-Suvo/ai-interview-coach",
     githubRepoBackend:
       "https://github.com/Asif-Zaman-Suvo/ai-interview-coach-backend",
     status: "In Progress",
+    live: "https://ai-interview-coach-suvo.vercel.app",
   },
   {
     title: "Doctor Khuji",
@@ -51,7 +54,6 @@ const projects: Project[] = [
       "TypeScript",
       "Tailwind",
       "Prisma",
-      "PostgreSQL",
       "Supabase",
       "shadcn/ui",
     ],

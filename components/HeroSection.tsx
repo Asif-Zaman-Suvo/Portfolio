@@ -57,8 +57,8 @@ export function HeroSection() {
 
           <Reveal delay={0.05}>
             <p className="mt-5 text-sm font-medium text-indigo-600">
-              Senior Frontend Engineer · React & Angular · TypeScript
-            </p>
+              Frontend Focused Full Stack Engineer · React & Angular · TypeScript · Node
+            </p>  
             <h1 className="mt-3 text-balance text-[1.75rem] font-semibold leading-[1.12] tracking-tight text-slate-900 min-[400px]:text-3xl sm:text-4xl sm:leading-[1.08] lg:text-6xl">
               Architecting{" "}
               <span className="gradient-text">scalable frontend systems</span>{" "}
@@ -70,7 +70,7 @@ export function HeroSection() {
             <p className="mt-5 max-w-2xl text-pretty text-base leading-relaxed text-slate-600 sm:mt-6 sm:text-lg">
               I&apos;m{" "}
               <span className="font-medium text-slate-900">{fullName}</span> — a
-              Senior Frontend Engineer with 5+ years architecting scalable SaaS,
+              Frontend Focused Full Stack Engineer with 5+ years architecting scalable SaaS,
               enterprise ERPs, and microservices-driven applications. I drive frontend
               strategy, build data-dense analytics dashboards, and optimize
               high-performance UIs in global remote environments.

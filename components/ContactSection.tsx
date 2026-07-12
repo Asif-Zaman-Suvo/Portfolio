@@ -74,7 +74,7 @@ export function ContactSection() {
           <p className="section-kicker mt-4 sm:mt-5">Contact</p>
           <h2 className="section-heading">Let&apos;s connect and build together.</h2>
           <p className="section-subheading mx-auto">
-            Open to remote and relocation roles. Reach out for senior frontend engineering
+            Open to remote and relocation roles. Reach out for Frontend Focused Full Stack Engineer
             positions, SaaS teams, or architecture discussions.
           </p>
         </div>
