@@ -66,7 +66,7 @@ const projects: Project[] = [
       "E-ticket platform for route search, seat booking, and modern passenger booking journeys.",
     stack: ["Next.js", "TypeScript", "Tailwind", "Supabase", "NestJS"],
     github: "https://github.com/Asif-Zaman-Suvo/Ticket-Booking-System-Frontend",
-    live: "https://suvo-e-ticket-booking.vercel.app",
+    live: "https://e-ticket-booking.vercel.app/",
     status: "In Progress",
   },
   {
