@@ -126,7 +126,7 @@ export function ContactSection() {
                     </p>
                     <a
                       href={`mailto:${EMAIL}`}
-                      className="mt-0.5 block break-all text-sm font-semibold text-slate-900 underline-offset-4 transition hover:text-indigo-700 hover:underline sm:text-base"
+                      className="mt-0.5 block break-words text-[13px] font-semibold text-slate-900 underline-offset-4 transition hover:text-indigo-700 hover:underline min-[380px]:text-sm sm:text-base"
                     >
                       {EMAIL}
                     </a>
@@ -135,7 +135,7 @@ export function ContactSection() {
                     type="button"
                     onClick={copyEmail}
                     aria-label={copied ? "Email copied" : "Copy email address"}
-                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-3 text-xs font-medium text-indigo-700 shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50"
+                    className="inline-flex h-9 w-full shrink-0 items-center justify-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-3 text-xs font-medium text-indigo-700 shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50 sm:w-auto"
                   >
                     {copied ? (
                       <>
