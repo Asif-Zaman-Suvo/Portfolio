@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
+import { getPortfolioContent } from "@/sanity/portfolio";
+
 import "./globals.css";
 
 const inter = Inter({
@@ -7,11 +10,35 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Md Asifuzzaman Suvo · Software Engineer",
-  description:
-    "Portfolio of Md Asifuzzaman Suvo — Software Engineer specializing in React, Next.js, Angular, NestJS, TypeScript, and scalable web applications.",
-};
+/**
+ * Shares the page's cached CMS read (Next dedupes it within a render), so
+ * editing SEO copy in Sanity updates metadata on the next revalidation.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const { site } = await getPortfolioContent();
+
+  return {
+    title: site.seo.title,
+    description: site.seo.description,
+    openGraph: {
+      title: site.seo.title,
+      description: site.seo.description,
+      type: "website",
+      ...(site.seo.ogImage
+        ? {
+            images: [
+              {
+                url: site.seo.ogImage.src,
+                width: site.seo.ogImage.width,
+                height: site.seo.ogImage.height,
+                alt: site.seo.ogImage.alt,
+              },
+            ],
+          }
+        : {}),
+    },
+  };
+}
 
 export const viewport = {
   width: "device-width",

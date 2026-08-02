@@ -4,40 +4,30 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, SendHorizontal, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ASSISTANT_OPEN_EVENT } from "@/lib/assistant-events";
 import { cn } from "@/lib/utils";
+import type { AssistantSettings } from "@/sanity/types";
 
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
 };
 
-const quickQuestions = ["Tech stack?", "Remote work?", "Experience?"];
+const HISTORY_KEY = "asif-chat-history";
 
-export function ChatBot() {
+export function ChatBot({ settings }: { settings: AssistantSettings }) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    if (typeof window === "undefined") {
-      return [
-        {
-          role: "assistant",
-          content:
-            "Hey! Ask me anything about Asif's skills, experience, availability, or background.",
-        },
-      ];
-    }
+    const greeting: ChatMessage[] = [
+      { role: "assistant", content: settings.greeting },
+    ];
 
-    const stored = window.sessionStorage.getItem("asif-chat-history");
-    if (!stored) {
-      return [
-        {
-          role: "assistant",
-          content:
-            "Hey! Ask me anything about Asif's skills, experience, availability, or background.",
-        },
-      ];
-    }
+    if (typeof window === "undefined") return greeting;
+
+    const stored = window.sessionStorage.getItem(HISTORY_KEY);
+    if (!stored) return greeting;
 
     try {
       const parsed = JSON.parse(stored) as ChatMessage[];
@@ -46,23 +36,17 @@ export function ChatBot() {
       // ignore corrupted data
     }
 
-    return [
-      {
-        role: "assistant",
-        content:
-          "Hey! Ask me anything about Asif's skills, experience, availability, or background.",
-      },
-    ];
+    return greeting;
   });
 
   useEffect(() => {
-    sessionStorage.setItem("asif-chat-history", JSON.stringify(messages));
+    sessionStorage.setItem(HISTORY_KEY, JSON.stringify(messages));
   }, [messages]);
 
   useEffect(() => {
     const openFromAnywhere = () => setOpen(true);
-    window.addEventListener("open-asif-ai-chat", openFromAnywhere);
-    return () => window.removeEventListener("open-asif-ai-chat", openFromAnywhere);
+    window.addEventListener(ASSISTANT_OPEN_EVENT, openFromAnywhere);
+    return () => window.removeEventListener(ASSISTANT_OPEN_EVENT, openFromAnywhere);
   }, []);
 
   const canSubmit = useMemo(
@@ -175,7 +159,7 @@ export function ChatBot() {
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                 <div className="flex items-center gap-2 text-sm font-medium text-slate-900">
                   <Sparkles className="h-4 w-4 text-indigo-600" />
-                  Ask Asif AI
+                  {settings.title}
                 </div>
                 <button
                   onClick={() => setOpen(false)}
@@ -188,7 +172,7 @@ export function ChatBot() {
 
               <div className="border-b border-slate-100 px-3 py-2">
                 <div className="flex flex-wrap gap-2">
-                  {quickQuestions.map((question) => (
+                  {settings.quickQuestions.map((question) => (
                     <button
                       key={question}
                       onClick={() => sendMessage(question)}
@@ -235,7 +219,7 @@ export function ChatBot() {
                   <input
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
-                    placeholder="Ask about stack, experience, availability..."
+                    placeholder={settings.inputPlaceholder}
                     className="flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
                   />
                   <Button

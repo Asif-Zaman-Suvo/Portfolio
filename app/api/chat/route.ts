@@ -1,57 +1,26 @@
 import { NextResponse } from "next/server";
 
+import { getAssistantContext } from "@/sanity/assistant-context";
+
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
 };
 
-const SYSTEM_PROMPT = `You are "Asif AI" — a friendly, concise assistant on the portfolio website of Md Ashfuzzaman Suve, a Frontend Focused Full Stack Engineer based in Bangladesh.
+/**
+ * Behaviour only. Every fact the assistant is allowed to state is injected from
+ * published CMS content, so the prompt cannot drift out of sync with the site.
+ */
+function buildSystemPrompt(context: string, fallbackAnswer: string): string {
+  return `You are "Asif AI" — a friendly, concise assistant on a software engineer's portfolio website.
 
-Your ONLY job is to answer questions about Asif using the information below. Never make up anything outside this data. If a question isn't covered, say: "I don't have that info — you can reach Asif directly at asif.zaman.suve@gmail.com"
+Answer questions ONLY from the PROFILE DATA below. Never invent details, numbers, employers, or dates. If a question is not covered by the data, reply exactly: "${fallbackAnswer}"
 
-Keep answers conversational, friendly, and short (2-4 sentences max). No bullet walls — keep it human.
+Keep answers conversational and short (2-4 sentences). Avoid bullet walls — keep it human.
 
---- ABOUT ASIF ---
-Name: Md Asifuzzaman Suvo (goes by Asif)
-Role: Frontend Focused Full Stack Engineer
-Experience: 5+ years
-Location: Bangladesh | Open to remote globally
-
---- TECH STACK ---
-Core: React, Next.js, TypeScript, Angular, NestJS, GraphQL
-State: Redux Toolkit, NgRx, Zustand, TanStack Query
-Databases: PostgreSQL, MongoDB, Redis
-UI: Tailwind CSS, shadcn/ui, Radix UI, Framer Motion
-Testing: Jest, Playwright, Cypress, React Testing Library
-Tools: Docker, GitHub Actions, AWS, Vercel, Figma
-Architecture: Micro-frontends, Module Federation, DDD, CQRS
-AI tools: LangChain, OpenAI SDK, Cursor, GitHub Copilot
-
---- EXPERIENCE ---
-SELISE Group (current): Software Engineer — enterprise SaaS, micro-frontend architecture, performance optimization (+35% engagement, -30% bundle size, +25% efficiency)
-ReformedTech: Junior Software Engineer — e-commerce and SaaS delivery pipelines
-eGeneration: Intern — government digital services across Bangladesh (64 districts)
-
---- EDUCATION ---
-B.Sc (Hons) in Computer Science & Engineering
-
---- PROJECTS ---
-1. AI Interview Coach — AI-powered mock interview platform with real-time feedback
-2. Doctor Khuj — healthcare appointment booking and doctor discovery system
-3. Ticket Booking System — scalable ticketing platform with seat management
-4. Smartphone Management Dashboard — enterprise admin panel for device fleet management
-5. LMS Platform — learning management system for online education
-
---- AVAILABILITY ---
-Open to: Remote full-time, contract, freelance
-Preferred roles: Frontend Focused Full Stack Engineer, Full Stack Frontend Architect, Tech Lead
-Timezone: GMT+6 (Bangladesh), comfortable working across global timezones
-
---- CONTACT ---
-Email: asif.zaman.suvo@gmail.com
-Phone: +880 1950 931070
-LinkedIn: Md Asifuzzaman Suvo
-GitHub: Asif-Zaman-Suvo`;
+=== PROFILE DATA ===
+${context}`;
+}
 
 export async function POST(request: Request) {
   try {
@@ -67,6 +36,9 @@ export async function POST(request: Request) {
     const body = (await request.json()) as { messages?: ChatMessage[] };
     const messages = Array.isArray(body.messages) ? body.messages : [];
 
+    // Shares the page's cached CMS read; a publish refreshes both together.
+    const { context, fallbackAnswer } = await getAssistantContext();
+
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -78,7 +50,7 @@ export async function POST(request: Request) {
         max_tokens: 300,
         temperature: 0.7,
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: buildSystemPrompt(context, fallbackAnswer) },
           ...messages.map((m) => ({
             role: m.role,
             content: m.content,
@@ -103,7 +75,7 @@ export async function POST(request: Request) {
     const message =
       typeof rawMessage === "string" && rawMessage.trim().length > 0
         ? rawMessage.trim()
-        : "I can help with Asif's background, stack, and availability.";
+        : fallbackAnswer;
 
     return NextResponse.json({ message });
   } catch (error) {

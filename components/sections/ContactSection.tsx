@@ -1,68 +1,14 @@
 "use client";
 
+import { ArrowUpRight, Check, Copy, Mail, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import {
-  ArrowUpRight,
-  Check,
-  Clock,
-  Code2,
-  Copy,
-  GitFork,
-  Link2,
-  Mail,
-  MapPin,
-  MessageCircle,
-  Phone,
-  Sparkles,
-} from "lucide-react";
+
 import { Reveal } from "@/components/Reveal";
+import { resolveIcon } from "@/components/cms/icons";
+import { openAssistant } from "@/lib/assistant-events";
+import type { ContactContent } from "@/sanity/types";
 
-const EMAIL = "asif.zaman.suvo@gmail.com";
-
-const directChannels = [
-  {
-    label: "Phone",
-    value: "+880 1950 931070",
-    href: "tel:+8801950931070",
-    icon: Phone,
-    external: false,
-  },
-  {
-    label: "WhatsApp",
-    value: "+880 1521 331328",
-    href: "https://wa.me/8801521331328",
-    icon: MessageCircle,
-    external: true,
-  },
-];
-
-const profiles = [
-  {
-    label: "LinkedIn",
-    value: "Md Asifuzzaman Suvo",
-    href: "https://www.linkedin.com/in/md-asifuzzaman-shuvo",
-    icon: Link2,
-  },
-  {
-    label: "GitHub",
-    value: "Asif-Zaman-Suvo",
-    href: "https://github.com/asif-zaman-suvo",
-    icon: GitFork,
-  },
-  {
-    label: "LeetCode",
-    value: "Asif_Suvo",
-    href: "https://leetcode.com/u/Asif_Suvo",
-    icon: Code2,
-  },
-];
-
-const availabilityMeta = [
-  { icon: MapPin, label: "Dhaka, Bangladesh" },
-  { icon: Clock, label: "GMT+6 · overlaps EU & US mornings" },
-];
-
-export function ContactSection() {
+export function ContactSection({ content }: { content: ContactContent }) {
   const [copied, setCopied] = useState(false);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -74,12 +20,12 @@ export function ContactSection() {
 
   const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(EMAIL);
+      await navigator.clipboard.writeText(content.email);
       setCopied(true);
       if (resetTimer.current) clearTimeout(resetTimer.current);
       resetTimer.current = setTimeout(() => setCopied(false), 2000);
     } catch {
-      window.location.href = `mailto:${EMAIL}`;
+      window.location.href = `mailto:${content.email}`;
     }
   };
 
@@ -87,12 +33,9 @@ export function ContactSection() {
     <section id="contact" className="section-scroll section-padding pb-4 sm:pb-6">
       <Reveal>
         <div className="mx-auto max-w-3xl text-center">
-          <p className="section-kicker">Contact</p>
-          <h2 className="section-heading">Let&apos;s connect and build together.</h2>
-          <p className="section-subheading mx-auto">
-            Open to remote and relocation roles. Reach out for Frontend Focused Full Stack Engineer
-            positions, SaaS teams, or architecture discussions.
-          </p>
+          <p className="section-kicker">{content.header.kicker}</p>
+          <h2 className="section-heading">{content.header.heading}</h2>
+          <p className="section-subheading mx-auto">{content.header.subheading}</p>
         </div>
       </Reveal>
 
@@ -111,7 +54,7 @@ export function ContactSection() {
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                 </span>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-700">
-                  Available for new roles
+                  {content.availabilityLabel}
                 </p>
               </div>
 
@@ -122,13 +65,13 @@ export function ContactSection() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[11px] font-semibold uppercase tracking-wider text-indigo-700/70">
-                      Preferred channel
+                      {content.preferredChannelLabel}
                     </p>
                     <a
-                      href={`mailto:${EMAIL}`}
+                      href={`mailto:${content.email}`}
                       className="mt-0.5 block break-words text-[13px] font-semibold text-slate-900 underline-offset-4 transition hover:text-indigo-700 hover:underline min-[380px]:text-sm sm:text-base"
                     >
-                      {EMAIL}
+                      {content.email}
                     </a>
                   </div>
                   <button
@@ -153,75 +96,89 @@ export function ContactSection() {
               </div>
 
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                {directChannels.map(({ label, value, href, icon: Icon, external }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target={external ? "_blank" : undefined}
-                    rel={external ? "noreferrer" : undefined}
-                    className="group flex items-center gap-3 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md"
-                  >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition group-hover:bg-indigo-50 group-hover:text-indigo-600">
-                      <Icon className="h-4.5 w-4.5" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                        {label}
+                {content.directChannels.map((channel) => {
+                  const Icon = resolveIcon(channel.iconKey);
+                  return (
+                    <a
+                      key={channel.label}
+                      href={channel.href}
+                      target={channel.external ? "_blank" : undefined}
+                      rel={channel.external ? "noreferrer" : undefined}
+                      className="group flex items-center gap-3 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md"
+                    >
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition group-hover:bg-indigo-50 group-hover:text-indigo-600">
+                        <Icon className="h-4.5 w-4.5" />
                       </span>
-                      <span className="mt-0.5 block truncate text-sm font-semibold text-slate-900">
-                        {value}
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                          {channel.label}
+                        </span>
+                        <span className="mt-0.5 block truncate text-sm font-semibold text-slate-900">
+                          {channel.value}
+                        </span>
                       </span>
-                    </span>
-                  </a>
-                ))}
+                    </a>
+                  );
+                })}
               </div>
 
               <dl className="mt-5 flex flex-col gap-2 border-t border-slate-100 pt-5 sm:flex-row sm:flex-wrap sm:gap-x-6">
-                {availabilityMeta.map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex items-center gap-2 text-xs text-slate-500">
-                    <Icon className="h-3.5 w-3.5 shrink-0 text-slate-400" />
-                    <dt className="sr-only">Detail</dt>
-                    <dd>{label}</dd>
-                  </div>
-                ))}
+                {content.meta.map((item) => {
+                  const Icon = resolveIcon(item.iconKey);
+                  return (
+                    <div
+                      key={item.label}
+                      className="flex items-center gap-2 text-xs text-slate-500"
+                    >
+                      <Icon className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                      <dt className="sr-only">Detail</dt>
+                      <dd>{item.label}</dd>
+                    </div>
+                  );
+                })}
               </dl>
             </div>
 
             <div className="lg:col-span-2 lg:border-l lg:border-slate-100 lg:pl-10">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                Profiles
+                {content.profilesLabel}
               </p>
 
               <div className="mt-3 divide-y divide-slate-100 border-y border-slate-100">
-                {profiles.map(({ label, value, href, icon: Icon }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group flex items-center gap-3 py-3 transition"
-                  >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition group-hover:bg-indigo-50 group-hover:text-indigo-600">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-slate-900 transition group-hover:text-indigo-700">
-                        {label}
+                {content.profiles.map((profile) => {
+                  const Icon = resolveIcon(profile.iconKey);
+                  return (
+                    <a
+                      key={profile.label}
+                      href={profile.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group flex items-center gap-3 py-3 transition"
+                    >
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition group-hover:bg-indigo-50 group-hover:text-indigo-600">
+                        <Icon className="h-4 w-4" />
                       </span>
-                      <span className="block truncate text-xs text-slate-500">{value}</span>
-                    </span>
-                    <ArrowUpRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:text-indigo-600" />
-                  </a>
-                ))}
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-sm font-semibold text-slate-900 transition group-hover:text-indigo-700">
+                          {profile.label}
+                        </span>
+                        <span className="block truncate text-xs text-slate-500">
+                          {profile.value}
+                        </span>
+                      </span>
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:text-indigo-600" />
+                    </a>
+                  );
+                })}
               </div>
 
               <button
                 type="button"
-                onClick={() => window.dispatchEvent(new Event("open-asif-ai-chat"))}
+                onClick={() => openAssistant()}
                 className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 transition hover:text-indigo-700"
               >
                 <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
-                Or ask my AI assistant
+                {content.assistantLinkLabel}
               </button>
             </div>
           </div>
@@ -229,7 +186,7 @@ export function ContactSection() {
       </Reveal>
 
       <p className="mt-6 text-center text-xs tracking-[0.14em] text-slate-400">
-        © {new Date().getFullYear()} Md Asifuzzaman Suvo. All rights reserved.
+        © {new Date().getFullYear()} {content.copyrightName}. All rights reserved.
       </p>
     </section>
   );

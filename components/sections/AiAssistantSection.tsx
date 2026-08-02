@@ -2,33 +2,17 @@
 
 import { motion } from "framer-motion";
 import { Bot, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { Reveal } from "@/components/Reveal";
+import { Button } from "@/components/ui/button";
+import { openAssistant } from "@/lib/assistant-events";
+import type { AiAssistantContent } from "@/sanity/types";
 
-const samplePrompts = [
-  "What's your React & Next.js experience?",
-  "Are you open to remote roles?",
-  "Tell me about the AI Interview Coach project.",
-];
-
-const previewMessages = [
-  {
-    role: "assistant" as const,
-    text: "Hey! Ask me about Asif's experience, stack, projects, or availability.",
-  },
-  {
-    role: "user" as const,
-    text: "What enterprise work has he done at SELISE?",
-  },
-  {
-    role: "assistant" as const,
-    text: "LMS modules, Angular ERP migration, KPI dashboards — 5+ years of SaaS frontend.",
-  },
-];
-
-export function AiAssistantSection() {
-  const openChat = () => window.dispatchEvent(new Event("open-asif-ai-chat"));
-
+export function AiAssistantSection({
+  content,
+}: {
+  content: AiAssistantContent;
+}) {
   return (
     <section id="ai-assistant" className="section-scroll pb-4 pt-2 sm:pb-6 sm:pt-4">
       <Reveal>
@@ -40,23 +24,21 @@ export function AiAssistantSection() {
           <div className="relative grid gap-8 p-5 sm:p-7 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-10 lg:p-9">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-indigo-600">
-                Interactive portfolio
+                {content.kicker}
               </p>
               <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-                Ask My AI Assistant
+                {content.heading}
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                A custom AI trained on my experience, projects, and background — ask
-                about my stack, enterprise work, availability, or anything on this
-                site. Faster than scrolling, more personal than a PDF.
+                {content.description}
               </p>
 
               <div className="mt-5 flex flex-wrap gap-2">
-                {samplePrompts.map((prompt) => (
+                {content.samplePrompts.map((prompt) => (
                   <button
                     key={prompt}
                     type="button"
-                    onClick={openChat}
+                    onClick={() => openAssistant()}
                     className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-left text-xs font-medium text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-800"
                   >
                     {prompt}
@@ -64,9 +46,13 @@ export function AiAssistantSection() {
                 ))}
               </div>
 
-              <Button size="lg" className="mt-6 w-full sm:w-auto" onClick={openChat}>
+              <Button
+                size="lg"
+                className="mt-6 w-full sm:w-auto"
+                onClick={() => openAssistant()}
+              >
                 <Sparkles className="h-4 w-4" />
-                Ask My AI Assistant
+                {content.ctaLabel}
               </Button>
             </div>
 
@@ -82,12 +68,16 @@ export function AiAssistantSection() {
                   <Bot className="h-4 w-4" />
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">Asif AI</p>
-                  <p className="text-xs text-slate-500">Live · answers from this portfolio</p>
+                  <p className="text-sm font-semibold text-slate-900">
+                    {content.previewTitle}
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    {content.previewSubtitle}
+                  </p>
                 </div>
               </div>
               <div className="space-y-3">
-                {previewMessages.map((message) => (
+                {content.previewMessages.map((message) => (
                   <div
                     key={message.text}
                     className={`max-w-[92%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${

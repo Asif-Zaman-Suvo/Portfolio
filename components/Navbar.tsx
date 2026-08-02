@@ -4,14 +4,14 @@ import { useEffect, useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { NavItem } from "@/sanity/types";
 
-const navItems = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Contact", href: "#contact" },
-];
+type NavbarProps = {
+  initials: string;
+  shortName: string;
+  items: NavItem[];
+  cta: NavItem;
+};
 
 function goToHash(href: string) {
   const id = href.startsWith("#") ? href.slice(1) : href;
@@ -23,7 +23,7 @@ function goToHash(href: string) {
   window.history.replaceState(null, "", next);
 }
 
-export function Navbar() {
+export function Navbar({ initials, shortName, items, cta }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("#hero");
@@ -37,7 +37,12 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const sections = ["hero", ...navItems.map((item) => item.href.slice(1))];
+    const sections = [
+      "hero",
+      ...items
+        .filter((item) => item.href.startsWith("#"))
+        .map((item) => item.href.slice(1)),
+    ];
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -56,7 +61,7 @@ export function Navbar() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [items]);
 
   const onNavLinkClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
@@ -113,15 +118,15 @@ export function Navbar() {
               className="group flex items-center gap-2 justify-self-start"
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-600 to-blue-600 text-sm font-bold text-white shadow-md shadow-indigo-500/25 transition group-hover:scale-105">
-                AS
+                {initials}
               </span>
               <span className="hidden text-sm font-semibold tracking-tight text-slate-900 sm:block">
-                Asif Suvo
+                {shortName}
               </span>
             </a>
 
             <ul className="hidden items-center justify-center gap-1 lg:flex">
-              {navItems.map((item) => {
+              {items.map((item) => {
                 const isActive = active === item.href;
                 return (
                   <li key={item.label}>
@@ -151,11 +156,11 @@ export function Navbar() {
 
             <div className="flex items-center justify-self-end gap-2">
               <a
-                href="#contact"
-                onClick={(e) => onNavLinkClick(e, "#contact")}
+                href={cta.href}
+                onClick={(e) => onNavLinkClick(e, cta.href)}
                 className="hidden rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-slate-800 lg:inline-flex"
               >
-                Get in touch
+                {cta.label}
               </a>
 
               <button
@@ -182,7 +187,7 @@ export function Navbar() {
                 className="overflow-hidden border-t border-slate-100 lg:hidden"
               >
                 <ul className="flex flex-col gap-1 p-3">
-                  {navItems.map((item) => (
+                  {items.map((item) => (
                     <li key={item.label}>
                       <a
                         href={item.href}
@@ -200,11 +205,11 @@ export function Navbar() {
                   ))}
                   <li className="pt-1">
                     <a
-                      href="#contact"
-                      onClick={(e) => onNavLinkClick(e, "#contact")}
+                      href={cta.href}
+                      onClick={(e) => onNavLinkClick(e, cta.href)}
                       className="block rounded-xl bg-slate-900 px-4 py-3 text-center text-sm font-medium text-white"
                     >
-                      Get in touch
+                      {cta.label}
                     </a>
                   </li>
                 </ul>
