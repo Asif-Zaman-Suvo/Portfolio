@@ -83,8 +83,8 @@ export const baselinePortfolioContent: PortfolioContent = {
     portrait: {
       src: "/profile-photo.png",
       alt: FULL_NAME,
-      width: 640,
-      height: 800,
+      width: 1024,
+      height: 1536,
       lqip: null,
     },
     focusLabel: "Current focus",

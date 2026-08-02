@@ -141,17 +141,15 @@ export function HeroSection({
           className="relative mx-auto w-full max-w-[17.5rem] sm:max-w-md lg:max-w-none"
         >
           <div className="overflow-hidden rounded-4xl border border-slate-200/80 bg-white shadow-(--shadow-elevated)">
-            <div className="relative bg-linear-to-br from-indigo-50/80 via-white to-blue-50/50 p-2 sm:p-2.5">
-              <div className="overflow-hidden rounded-[1.5rem] ring-1 ring-slate-200/80 sm:rounded-[1.65rem]">
-                <SanityImage
-                  image={content.portrait}
-                  priority
-                  sizes="(min-width: 1024px) 24rem, (min-width: 640px) 28rem, 17.5rem"
-                  className="aspect-4/5 w-full object-cover object-top"
-                  fallbackText={initials}
-                  fallbackClassName="flex aspect-4/5 items-center justify-center bg-linear-to-br from-slate-100 to-indigo-50 text-5xl font-semibold text-indigo-600"
-                />
-              </div>
+            <div className="overflow-hidden">
+              <SanityImage
+                image={content.portrait}
+                priority
+                sizes="(min-width: 1024px) 24rem, (min-width: 640px) 28rem, 17.5rem"
+                className="h-auto w-full"
+                fallbackText={initials}
+                fallbackClassName="flex aspect-2/3 w-full items-center justify-center bg-linear-to-br from-slate-100 to-indigo-50 text-5xl font-semibold text-indigo-600"
+              />
             </div>
 
             <div className="space-y-3 border-t border-slate-100 px-4 py-4 sm:px-5 sm:py-5">

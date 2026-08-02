@@ -13,6 +13,8 @@ export type RawImage = {
   crop?: unknown;
   alt?: string | null;
   lqip?: string | null;
+  width?: number | null;
+  height?: number | null;
 } | null;
 
 const builder = isSanityConfigured
@@ -34,22 +36,45 @@ export function urlFor(source: SanityImageSource) {
  */
 export function toImageValue(
   raw: RawImage,
-  options: { width: number; height: number; alt: string },
+  options: {
+    width: number;
+    height: number;
+    alt: string;
+    /**
+     * `crop` fills the exact box (OG images). `max` keeps the full frame so
+     * CSS can position portraits without the CDN already cutting the head off.
+     */
+    fit?: "crop" | "max";
+  },
 ): ImageValue | null {
   if (!raw?.asset?._ref || !builder) return null;
 
-  const src = urlFor(raw as SanityImageSource)
-    .width(options.width)
-    .height(options.height)
-    .fit("crop")
-    .auto("format")
-    .url();
+  const fit = options.fit ?? "crop";
+  // Prefer the asset's real pixel size so layout matches the uploaded ratio
+  // (e.g. 1024×1536 → 2:3) instead of a hard-coded box.
+  const nativeWidth =
+    typeof raw.width === "number" && raw.width > 0 ? raw.width : options.width;
+  const nativeHeight =
+    typeof raw.height === "number" && raw.height > 0
+      ? raw.height
+      : options.height;
+
+  // Cap CDN width for performance; keep native aspect for layout.
+  const width = Math.min(nativeWidth, options.width);
+  const height = Math.round((nativeHeight / nativeWidth) * width);
+
+  const image = urlFor(raw as SanityImageSource).width(width).auto("format");
+
+  const src =
+    fit === "max"
+      ? image.fit("max").url()
+      : image.height(height).fit("crop").url();
 
   return {
     src,
     alt: raw.alt?.trim() || options.alt,
-    width: options.width,
-    height: options.height,
+    width,
+    height,
     lqip: raw.lqip ?? null,
   };
 }

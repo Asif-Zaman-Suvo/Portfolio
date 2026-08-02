@@ -9,7 +9,9 @@ const IMAGE_FRAGMENT = /* groq */ `{
   hotspot,
   crop,
   alt,
-  "lqip": asset->metadata.lqip
+  "lqip": asset->metadata.lqip,
+  "width": asset->metadata.dimensions.width,
+  "height": asset->metadata.dimensions.height
 }`;
 
 const SECTION_HEADER_FRAGMENT = /* groq */ `{

@@ -375,9 +375,11 @@ function mapPortfolio(raw: PortfolioQueryResult): PortfolioContent {
       })(),
       portrait:
         toImageValue(hero.portrait as RawImage, {
-          width: 640,
-          height: 800,
+          // Native asset ratio is 2:3 (1024×1536). Keep that — don't force 4:5.
+          width: 1024,
+          height: 1536,
           alt: str(site.fullName, base.site.fullName),
+          fit: "max",
         }) ?? base.hero.portrait,
       focusLabel: str(hero.focusLabel, base.hero.focusLabel),
       focusTitle: str(hero.focusTitle, base.hero.focusTitle),
