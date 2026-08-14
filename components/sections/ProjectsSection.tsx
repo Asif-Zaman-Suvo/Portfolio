@@ -99,7 +99,7 @@ function ProjectCard({
         <p
           className={`text-slate-600 ${
             spotlight
-              ? "max-w-3xl text-base leading-7 sm:text-lg sm:leading-8"
+              ? "text-base leading-7 sm:text-lg sm:leading-8"
               : "text-sm leading-6"
           }`}
         >
