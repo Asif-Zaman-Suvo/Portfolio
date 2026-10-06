@@ -1,18 +1,5 @@
 import type { PortfolioContent } from "@/sanity/types";
 
-/**
- * The committed baseline of every editable value on the site.
- *
- * It has two jobs and deliberately no third:
- *  1. `scripts/seed-sanity.ts` writes it into a fresh Sanity dataset, so the
- *     Studio starts populated with the real content instead of empty fields.
- *  2. `getPortfolioContent()` serves it when Sanity is unconfigured or
- *     unreachable, so a CMS outage can never blank out the portfolio.
- *
- * Once Sanity is seeded, Sanity is the source of truth. Edit content there;
- * this file only needs touching if the content *shape* changes.
- */
-
 const EMAIL = "asif.zaman.suvo@gmail.com";
 const FULL_NAME = "Md Asifuzzaman Suvo";
 
