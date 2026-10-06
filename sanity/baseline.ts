@@ -3,7 +3,7 @@ import type { PortfolioContent } from "@/sanity/types";
 const EMAIL = "asif.zaman.suvo@gmail.com";
 const FULL_NAME = "Md Asifuzzaman Suvo";
 
-const envResumeUrl = process.env.NEXT_PUBLIC_CV_URL?.trim() || "/cv.pdf";
+const envResumeUrl = process.env.NEXT_PUBLIC_CV_URL?.trim();
 
 export const baselinePortfolioContent: PortfolioContent = {
   site: {
@@ -22,11 +22,13 @@ export const baselinePortfolioContent: PortfolioContent = {
       { label: "Contact", href: "#contact" },
     ],
     navCta: { label: "Get in touch", href: "#contact" },
-    resume: {
-      downloadUrl: envResumeUrl,
-      label: "Download CV",
-      updatedAt: null,
-    },
+    resume: envResumeUrl
+      ? {
+          downloadUrl: envResumeUrl,
+          label: "Download CV",
+          updatedAt: null,
+        }
+      : null,
     seo: {
       title: "Md Asifuzzaman Suvo · Software Engineer",
       description:
