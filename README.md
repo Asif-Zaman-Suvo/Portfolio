@@ -79,6 +79,7 @@ Studio → **Site settings → Resume** → replace the PDF → **Publish**. The
 | `NEXT_PUBLIC_SANITY_DATASET` | No | App | Defaults to `production`. Public |
 | `SANITY_REVALIDATE_SECRET` | Yes | App | Shared secret for the publish webhook. **Secret** |
 | `GROQ_API_KEY` | Yes | App | Groq API key for `/api/chat`. **Secret** |
+| `GROQ_MODEL` | No | App | Chat model ID. Defaults to `openai/gpt-oss-120b`; choose a model available to your Groq account |
 | `SANITY_API_WRITE_TOKEN` | Seeding only | Local | Editor token, used by `npm run seed`. Never set in Netlify |
 | `NEXT_PUBLIC_CV_URL` | No | App | Pre-Sanity fallback CV url. Ignored once a CV is uploaded to Sanity |
 | `SANITY_STUDIO_PROJECT_ID` | Yes | `studio/.env.local` | Same project ID — the Sanity CLI only reads `SANITY_STUDIO_*` |

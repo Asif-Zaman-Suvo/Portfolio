@@ -25,6 +25,7 @@ ${context}`;
 export async function POST(request: Request) {
   try {
     const apiKey = process.env.GROQ_API_KEY;
+    const model = process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-120b";
 
     if (!apiKey) {
       return NextResponse.json(
@@ -46,8 +47,8 @@ export async function POST(request: Request) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        max_tokens: 300,
+        model,
+        max_completion_tokens: 2048,
         temperature: 0.7,
         messages: [
           { role: "system", content: buildSystemPrompt(context, fallbackAnswer) },
@@ -62,8 +63,13 @@ export async function POST(request: Request) {
     if (!res.ok) {
       const detail = await res.text();
       return NextResponse.json(
-        { error: "Groq request failed", detail },
-        { status: res.status },
+        {
+          error: "Groq request failed",
+          detail,
+          userMessage:
+            "The assistant is temporarily unavailable. Please try again later.",
+        },
+        { status: res.status === 429 ? 429 : 502 },
       );
     }
 

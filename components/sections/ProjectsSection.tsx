@@ -107,7 +107,7 @@ function ProjectCard({
         </p>
 
         <div className={`flex flex-wrap gap-2 ${spotlight ? "mt-6" : "mt-4"}`}>
-          {project.stack.map((item) => (
+          {[...new Set(project.stack)].map((item) => (
             <span
               key={item}
               className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
